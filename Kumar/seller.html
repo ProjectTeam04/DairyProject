@@ -1,71 +1,54 @@
 <!DOCTYPE html>
-<!-- Created By CodingLab - www.codinglabweb.com -->
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="UTF-8">
-    <!---<title> Responsive Registration Form | CodingLab </title>--->
-     <link rel="stylesheet" href="seller.css">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   </head>
-<body>
-  <div class="container">
-    <div class="title">Seller</div>
-    <div class="content">
-      <form action="#">
-        <div class="user-details">
-          <div class="input-box">
-                <span class="details">sellerID</span>
-                <input type="text" placeholder="Confirm your sellerID" required>
-              </div>
-          <div class="input-box">
-            <span class="details">firstName</span>
-            <input type="text" placeholder="Enter your firstName" required>
-          </div>
-          <div class="input-box">
-            <span class="details">lastName</span>
-            <input type="text" placeholder="Enter your lastName" required>
-          </div>
-          <div class="input-box">
-            <span class="details">Email</span>
-            <input type="text" placeholder="Enter your email" required>
-          </div>
-          <div class="input-box">
-            <span class="details">userName</span>
-            <input type="text" placeholder="Enter your userName" required>
-          </div>
-          <div class="input-box">
-            <span class="details">Password</span>
-            <input type="text" placeholder="Enter your password" required>
-          </div>
-          
-          
-        </div>
-        <!-- <div class="gender-details">
-          <input type="radio" name="gender" id="dot-1">
-          <input type="radio" name="gender" id="dot-2">
-          <input type="radio" name="gender" id="dot-3">
-          <span class="gender-title">Gender</span>
-          <div class="category">
-          <label for="dot-1">
-            <span class="dot one"></span>
-            <span class="gender">Male</span>
-          </label>
-          <label for="dot-2">
-            <span class="dot two"></span>
-            <span class="gender">Female</span>
-          </label>
-          <label for="dot-3">
-            <span class="dot three"></span>
-            <span class="gender">Prefer not to say</span>
-            </label>
-          </div>
-        </div> -->
-        <div class="button">
-          <input type="submit" value="Register seller">
-        </div>
-      </form>
-    </div>
-  </div>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dairy Prototype</title>
+  <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+    crossorigin="anonymous"></script>
+</head>
+<script>
+  $(() => {
+    $("#submitbtn").click(() => {
+      var obj = { firstName: $("#firstname").val(), lastName: $("lastname").val(), emailId: $("#emailid").val(), userName: $("#username").val(), passWord: $("#password").val(), phoneNumer: $("#phonenumber").val() };
+
+      var connect = {
+        data: JSON.stringify(obj),
+        contentType: "application/json",
+        url: 'http://localhost:9090/insertrecordsforseller.com',
+        type: 'post',
+        dataType: 'json',
+        success: (data) => {
+          console.log(data);
+        },
+        error: (data) => {
+          alert('Something went wrong...!');
+        }
+      }
+
+      $.ajax(connect);
+    });
+  });
+</script>
+
+<body>
+  <form method="post">
+    <span>First Name : </span> <input type="text" name="firstName" id="firstname" required> <br>
+    <span>Last Name : </span> <input type="text" name="lastName" id="lastname"><br>
+    <span>Email : </span> <input type="email" name="emailId" required id="emailid"><br>
+    <span>Username : </span> <input type="text" name="userName" id="username" required><br>
+    <span>Password : </span> <input type="password" name="passWord" id="password" required> <br><br>
+    <span>Phone Number : </span> <input type="tel" name="phoneNumer" id="phonenumber"><br>
+    <span>Select product to offer : </span>
+    <select name="product" id="productlst">
+      <option value="Milk">Milk</option>
+      <option value="Curd">Curd</option>
+      <option value="Lassi">Lassi</option>
+    </select><br>
+    <span>Click on button to submit : </span> <input type="submit" name="submit" id="submitbtn">
+  </form>
 </body>
+
 </html>
