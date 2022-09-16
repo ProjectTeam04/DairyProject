@@ -1,19 +1,26 @@
 package com.project.dairyproject.Entities;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.stereotype.Component;
 
 import net.bytebuddy.implementation.bind.annotation.Default;
 
+@Entity
+@Table
+@Component
 public class AddressDetails {
 
 	@Id
@@ -27,9 +34,9 @@ public class AddressDetails {
 	@Pattern(regexp = "^[a-bA-Z]{20}", message = "Please enter correct town name")
 	private String town;
 	@NotEmpty(message = "Pincode required")
-	@UniqueElements(message = "Pincode cannot be duplicate")
 	@Length(min = 6, max = 6, message = "Please enter correct 6 digits pincode")
-	@Column(length = 6)
+	@Column(length = 6, unique = true)
+	@Pattern(regexp = "^[1-9]{1}[0-9]{2}[0-9]{3}$", message = "Please enter correct 6 digits pincode number")
 	private String pincode;
 
 	public int getAID() {

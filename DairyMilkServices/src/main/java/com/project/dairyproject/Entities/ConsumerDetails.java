@@ -2,6 +2,7 @@ package com.project.dairyproject.Entities;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -20,11 +21,16 @@ import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import net.bytebuddy.utility.nullability.UnknownNull;
 
 @Entity
 @Table
+@Component
 public class ConsumerDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +43,7 @@ public class ConsumerDetails {
 	@Pattern(regexp = "^[a-bA-Z]{3,18}", message = "Please enter your correct last name ")
 	private String lastName;
 	@NotEmpty(message = "Select your gender")
-	@Check(constraints = "Male,Female,Other")
+	@Check(constraints = "Male, Female, Other")
 	private String gender;
 	@NotEmpty(message = "Email address is required for registration")
 	@Column(unique = true)
