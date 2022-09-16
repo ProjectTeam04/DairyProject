@@ -1,5 +1,7 @@
 package com.project.dairyproject.MainController;
 
+import javax.validation.Valid;
+
 import org.hibernate.boot.cfgxml.spi.CfgXmlAccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +23,7 @@ public class MainController {
 	private ConsumerServices conServ;
 
 	@PostMapping("/consumer/registerdetails")
-	public String registerNewConsumer(@RequestBody ConsumerDetails consumerDetails) {
+	public String registerNewConsumer(@Valid @RequestBody ConsumerDetails consumerDetails) {
 		return conServ.registerNewConsumer(consumerDetails);
 	}
 

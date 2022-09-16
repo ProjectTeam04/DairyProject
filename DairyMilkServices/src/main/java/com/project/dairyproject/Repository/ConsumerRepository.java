@@ -17,10 +17,13 @@ public interface ConsumerRepository extends CrudRepository<ConsumerDetails, Inte
 	@Query("select c from ConsumerDetails c where c.emailId = ?1 and c.password = ?2")
 	public ConsumerDetails findConsumerDetailsByEmailAndPassword(String emailId, String password);
 
+	@Query("select count(c) from ConsumerDetails c where c.emailId = ?1")
 	public int findConsumerDetailsByEmailId(String emailId);
 
+	@Query("select count(c) from ConsumerDetails c where c.username = ?1")
 	public int findConsumerDetailsByUsername(String username);
 
+	@Query("select count(c) from ConsumerDetails c where c.phoneNumber = ?1")
 	public int findConsumerDetailsByPhoneNumber(String phoneNumber);
 
 	@Query("select c from ConsumerDetails c where c.emailId = ?1")

@@ -37,23 +37,26 @@ public class ConsumerDetails {
 	private int consumerId;
 	@NotEmpty(message = "First Name is required")
 	@Length(min = 3, max = 18, message = "First name can be in between 3 to 18 characters only")
-	@Pattern(regexp = "^[a-bA-Z]{3,18}", message = "Please enter your correct name")
+	@Pattern(regexp = "^[a-zA-Z]{3,18}$", message = "Please enter your correct name")
 	private String firstName;
 	@Length(min = 3, max = 18, message = "First name can be in between 3 to 18 characters only")
-	@Pattern(regexp = "^[a-bA-Z]{3,18}", message = "Please enter your correct last name ")
+	@Pattern(regexp = "^[a-zA-Z]{3,18}$", message = "Please enter your correct last name ")
 	private String lastName;
 	@NotEmpty(message = "Select your gender")
 	@Check(constraints = "Male, Female, Other")
 	private String gender;
 	@NotEmpty(message = "Email address is required for registration")
 	@Column(unique = true)
-	@Email(regexp = "^[\\\\w!#$%&'*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}", message = "Please enter your valid email address")
+	/*
+	 * @Email(regexp =
+	 * "^[\\\\w!#$%&'*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$",
+	 * message = "Please enter your valid email address")
+	 */
 	private String emailId;
 	@NotEmpty(message = "Please enter your phone number")
-	@Column(length = 13, unique = true)
+	@Column(length = 14, unique = true)
 	@Length(min = 10, max = 13, message = "Please enter correct phone number")
-	@Pattern(regexp = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$"
-			+ "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?){2}\\d{3}$" + "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?)(\\d{2}[ ]?){2}\\d{2}$")
+	@Pattern(regexp = "^(?:(?:\\+|0{0,2})91(\\s*[\\ -]\\s*)?|[0]?)?[789]\\d{9}|(\\d[ -]?){10}\\d$", message = "Please enter your correct phone number")
 	private String phoneNumber;
 	@Length(max = 40, message = "Street cannot be more than 40 characters")
 	private String street;
@@ -63,7 +66,13 @@ public class ConsumerDetails {
 	@Pattern(regexp = "^[a-zA-Z0-9_-]{5,15}$", message = "Please enter correct username")
 	private String username;
 	@NotEmpty(message = "Password is required")
-	@Length(min = 4, max = 15, message = "Password must be in between 4 to 15 characters")
+	@Length(min = 4, max = 12, message = "Password must be in between 4 to 12 characters")
+	/*
+	 * @Pattern(regexp =
+	 * "^((?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])){4,12}$", message =
+	 * "password must contain atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit "
+	 * )
+	 */
 	private String password;
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "AID")
