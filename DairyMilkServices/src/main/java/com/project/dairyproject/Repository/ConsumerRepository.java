@@ -17,6 +17,9 @@ public interface ConsumerRepository extends CrudRepository<ConsumerDetails, Inte
 	@Query("select c from ConsumerDetails c where c.emailId = ?1 and c.password = ?2")
 	public ConsumerDetails findConsumerDetailsByEmailAndPassword(String emailId, String password);
 
+	@Query("select c from ConsumerDetails c where c.phoneNumber = ?1 and c.password = ?2")
+	public ConsumerDetails findConsumerDetailsByPhoneNumberAndPassword(String phoneNumber, String password);
+
 	@Query("select count(c) from ConsumerDetails c where c.emailId = ?1")
 	public int findConsumerDetailsByEmailId(String emailId);
 
@@ -35,7 +38,7 @@ public interface ConsumerRepository extends CrudRepository<ConsumerDetails, Inte
 	@Query("select c from ConsumerDetails c where c.phoneNumber = ?1")
 	public ConsumerDetails findConsumerDetailsByPhoneNumberOnly(String phoneNumber);
 
-	public int deleteConsumerDetailsByConsumerId(int consumerid);
+	public int deleteConsumerDetailsByConsumerId(Integer consumerid);
 
 	public int deleteConsumerDetailsByEmailId(String emailId);
 
@@ -45,13 +48,13 @@ public interface ConsumerRepository extends CrudRepository<ConsumerDetails, Inte
 	@Query("select c from ConsumerDetails c where firstName = ?1")
 	public List<ConsumerDetails> findConsumerByName(String name);
 
-	@Query("select c from ConsumerDetails c inner join AddressDetails a on a.AID = c.consumerId where a.pincode = ?1")
-	public List<ConsumerDetails> findConsumerByPincode(String pincode);
+	@Query("select c from ConsumerDetails c where c.address.pincode = ?1")
+	public List<ConsumerDetails> findConsumersByPincode(String pincode);
 
-	@Query("select c from ConsumerDetails c inner join AddressDetails a on a.AID = c.consumerId where a.district = ?1")
-	public List<ConsumerDetails> findConsumerByDistrict(String district);
+	@Query("select c from ConsumerDetails c where c.address.district = ?1")
+	public List<ConsumerDetails> findConsumersByDistrict(String district);
 
-	@Query("select c from ConsumerDetails c inner join AddressDetails a on a.AID = c.consumerId where a.town = ?1")
-	public List<ConsumerDetails> findConsumerByTown(String town);
+	@Query("select c from ConsumerDetails c where c.address.town = ?1")
+	public List<ConsumerDetails> findConsumersByTown(String town);
 
 }

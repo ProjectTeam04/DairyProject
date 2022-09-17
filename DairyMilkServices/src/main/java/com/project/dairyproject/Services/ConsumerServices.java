@@ -41,7 +41,7 @@ public class ConsumerServices {
 		if (email == 1) {
 			throw new EmailAddressFoundException("Email address already registered");
 		} else if (username == 1) {
-			throw new UsernameFoundException("Username already taken, please try another one");
+			throw new UsernameFoundException("Username already taken, please try with another one");
 		} else if (phoneNumber == 1) {
 			throw new PhoneNumberFoundException("Phone Number already registered");
 		} else if (addressDetails != null) {
@@ -64,6 +64,10 @@ public class ConsumerServices {
 		return conRepo.findConsumerDetailsByUsernameAndPassword(username, password);
 	}
 
+	public ConsumerDetails getConsumerDetailsByPhoneNumber(String phoneNumber, String password) {
+		return conRepo.findConsumerDetailsByPhoneNumberAndPassword(phoneNumber, password);
+	}
+
 	public ConsumerDetails getConsumerDetailsByEmailId(String emailId) {
 		return conRepo.findConsumerDetailsByEmailIdOnly(emailId);
 	}
@@ -76,12 +80,19 @@ public class ConsumerServices {
 		return conRepo.findConsumerDetailsByPhoneNumberOnly(phoneNumber);
 	}
 
-	public int deleteConsumerDetailsByEmailId(String emailId) {
-		return conRepo.deleteConsumerDetailsByEmailId(emailId);
+	public String deleteConsumerDetailsByEmailId(String emailId) {
+		if (conRepo.deleteConsumerDetailsByEmailId(emailId) == 1) {
+			return "Consumer account removed from database...";
+		}
+
+		return "Account not found !";
 	}
 
-	public int deleteConsumerDetailsByConsumerId(String consumerId) {
-		return conRepo.deleteConsumerDetailsByEmailId(consumerId);
+	public String deleteConsumerDetailsByConsumerId(Integer consumerId) {
+		if (conRepo.deleteConsumerDetailsByConsumerId(consumerId) == 1) {
+			return "Consumer account removed from database...";
+		}
+		return "Account not found !";
 	}
 
 	public List<ConsumerDetails> getAllConsumerList() {
@@ -92,16 +103,16 @@ public class ConsumerServices {
 		return conRepo.findConsumerByName(firstName);
 	}
 
-	public List<ConsumerDetails> getConsumerListByPincode(ConsumerDetails consumerDetails) {
-		return conRepo.findConsumerByPincode(consumerDetails.getAddress().getPincode());
+	public List<ConsumerDetails> getConsumerListByPincode(String pincode) {
+		return conRepo.findConsumersByPincode(pincode);
 	}
 
-	public List<ConsumerDetails> getConsumerListByDistrict(ConsumerDetails consumerDetails) {
-		return conRepo.findConsumerByDistrict(consumerDetails.getAddress().getDistrict());
+	public List<ConsumerDetails> getConsumerListByDistrict(String district) {
+		return conRepo.findConsumersByDistrict(district);
 	}
 
-	public List<ConsumerDetails> getConsumerListByTown(ConsumerDetails consumerDetails) {
-		return conRepo.findConsumerByTown(consumerDetails.getAddress().getTown());
+	public List<ConsumerDetails> getConsumerListByTown(String town) {
+		return conRepo.findConsumersByTown(town);
 	}
 
 }
