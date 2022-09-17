@@ -31,7 +31,7 @@ public class AddressDetails {
 	@Pattern(regexp = "^[a-zA-Z]{3,20}$", message = "Please enter correct district name")
 	private String district;
 	@Length(max = 20, message = "Town name cannot be more than 20 characters")
-	@Pattern(regexp = "^[a-zA-Z]{3,20}$", message = "Please enter correct town name")
+	@Pattern(regexp = "^[a-zA-Z]{0,20}$", message = "Please enter correct town name")
 	private String town;
 	@NotEmpty(message = "Pincode required")
 	@Length(min = 6, max = 6, message = "Please enter correct 6 digits pincode")

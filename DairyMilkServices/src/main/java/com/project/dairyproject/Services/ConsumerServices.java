@@ -12,6 +12,9 @@ import com.project.dairyproject.Entities.AddressDetails;
 import com.project.dairyproject.Entities.ConsumerDetails;
 import com.project.dairyproject.Repository.AddressRepository;
 import com.project.dairyproject.Repository.ConsumerRepository;
+import com.project.dairyproject.UserDefinedExceptions.EmailAddressFoundException;
+import com.project.dairyproject.UserDefinedExceptions.PhoneNumberFoundException;
+import com.project.dairyproject.UserDefinedExceptions.UsernameFoundException;
 
 @Service
 @Transactional
@@ -27,7 +30,8 @@ public class ConsumerServices {
 	@Autowired
 	private AddressRepository addRepo;
 
-	public String registerNewConsumer(ConsumerDetails consumerDetails) {
+	public ConsumerDetails registerNewConsumer(ConsumerDetails consumerDetails)
+			throws EmailAddressFoundException, UsernameFoundException, PhoneNumberFoundException {
 		int email = conRepo.findConsumerDetailsByEmailId(consumerDetails.getEmailId());
 		int username = conRepo.findConsumerDetailsByUsername(consumerDetails.getUsername());
 		int phoneNumber = conRepo.findConsumerDetailsByPhoneNumber(consumerDetails.getPhoneNumber());
@@ -35,18 +39,20 @@ public class ConsumerServices {
 		addressDetails = addRepo.findAddressDetailsByPincode(consumerDetails.getAddress().getPincode());
 
 		if (email == 1) {
-			return "Email address already registered";
+			throw new EmailAddressFoundException("Email address already registered");
 		} else if (username == 1) {
-			return "Username is already taken";
+			throw new UsernameFoundException("Username already taken, please try another one");
 		} else if (phoneNumber == 1) {
-			return "Phone Number already registered";
+			throw new PhoneNumberFoundException("Phone Number already registered");
 		} else if (addressDetails != null) {
 			consumerDetails.setAddress(addressDetails);
 			conRepo.save(consumerDetails);
-			return "Consumer Successfully Registered..!";
+			return conRepo.findConsumerDetailsByEmailAndPassword(consumerDetails.getEmailId(),
+					consumerDetails.getPassword());
 		} else {
 			conRepo.save(consumerDetails);
-			return "Consumer Successfully Registered..!";
+			return conRepo.findConsumerDetailsByEmailAndPassword(consumerDetails.getEmailId(),
+					consumerDetails.getPassword());
 		}
 	}
 
