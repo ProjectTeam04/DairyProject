@@ -1,6 +1,5 @@
 package com.project.dairyproject.MainController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -100,5 +99,10 @@ public class MainController {
 	public List<ConsumerDetails> getAllConsumersByTown(String town) {
 		return conServ.getConsumerListByTown(town);
 	}
+	
+	/*
+	 * @GetMapping("/admin/fetchconsumersbyAID") public List<ConsumerDetails>
+	 * getAllConsumersByAID(int AID) { return conServ.getConsumerListByAID(AID); }
+	 */
 
 }
