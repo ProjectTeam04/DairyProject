@@ -14,20 +14,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.dairyproject.Entities.ConsumerDetails;
+import com.project.dairyproject.Entities.SellerDetails;
 import com.project.dairyproject.LoginEntities.Login;
 import com.project.dairyproject.LoginEntities.LoginByPhone;
 import com.project.dairyproject.LoginEntities.LoginByUsername;
 import com.project.dairyproject.Services.ConsumerServices;
+import com.project.dairyproject.Services.SellerServices;
 import com.project.dairyproject.UserDefinedExceptions.EmailAddressFoundException;
 import com.project.dairyproject.UserDefinedExceptions.PhoneNumberFoundException;
 import com.project.dairyproject.UserDefinedExceptions.UsernameFoundException;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:9090")
 public class MainController {
 
 	@Autowired
 	private ConsumerServices conServ;
+
+	@Autowired
+	private SellerServices sellServ;
+
+	// Consumers Controller
 
 	@PostMapping("/consumer/registerdetails")
 	public ConsumerDetails registerNewConsumer(@Valid @RequestBody ConsumerDetails consumerDetails)
@@ -51,6 +58,43 @@ public class MainController {
 		return conServ.getConsumerDetailsByPhoneNumber(loginByPhone.getPhoneNumber(), loginByPhone.getPassword());
 	}
 
+	@GetMapping("/consumer/removeconsumeraccount")
+	public String deleteConsumerByConsumerId(@RequestParam Integer consumerId) {
+		return conServ.deleteConsumerDetailsByConsumerId(consumerId);
+	}
+
+	// Sellers Controller
+
+	@PostMapping("/seller/registerdetails")
+	public SellerDetails registeredNewSeller(@Valid @RequestBody SellerDetails sellerDetails)
+			throws EmailAddressFoundException, UsernameFoundException, PhoneNumberFoundException {
+		return sellServ.registerNewSeller(sellerDetails);
+	}
+
+	@PostMapping("/seller/fetchdetailsbyemail")
+	public SellerDetails getSellerDetailsByEmailIdandPassword(@RequestBody Login login) {
+		return sellServ.getSellerDetailsByEmailAndPassword(login.getEmailId(), login.getPassword());
+	}
+
+	@PostMapping("/seller/fetchdetailsbyusername")
+	public SellerDetails getSellerDetailsByUsernameAndPassword(@RequestBody LoginByUsername loginByUsername) {
+		return sellServ.getSellerDetailsByUsernameAndPassword(loginByUsername.getUsername(),
+				loginByUsername.getPassword());
+	}
+
+	@PostMapping("/seller/fetchdetailsbyphonenumber")
+	public SellerDetails getSellerDetailsByPhoneNumber(@RequestBody LoginByPhone loginByPhone) {
+		return sellServ.getSellerDetailsByPhoneNumberAndPassword(loginByPhone.getPhoneNumber(),
+				loginByPhone.getPassword());
+	}
+
+	@GetMapping("/seller/removeselleraccount")
+	public String deleteSellerBysellerId(@RequestParam Integer sellerId) {
+		return sellServ.deleteSellerDetailsBySellerId(sellerId);
+	}
+
+	// Administrator Controller
+
 	@GetMapping("/admin/fetchconsumerbyemail")
 	public ConsumerDetails getConsumerDetailsByEmailId(@RequestParam String emailId) {
 		return conServ.getConsumerDetailsByEmailId(emailId);
@@ -69,11 +113,6 @@ public class MainController {
 	@GetMapping("/admin/removeaccountbyemail")
 	public String deleteConsumerByEmail(@RequestParam String emailId) {
 		return conServ.deleteConsumerDetailsByEmailId(emailId);
-	}
-
-	@GetMapping("/admin/removeaccountbyconsumerid")
-	public String deleteConsumerByConsumerId(@RequestParam Integer consumerId) {
-		return conServ.deleteConsumerDetailsByConsumerId(consumerId);
 	}
 
 	@GetMapping("/admin/fetchallconsumers")
