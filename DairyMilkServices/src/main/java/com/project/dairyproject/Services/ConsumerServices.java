@@ -115,13 +115,4 @@ public class ConsumerServices {
 		return conRepo.findConsumersByTown(town);
 	}
 
-
-
-	/*
-	 * public List<ConsumerDetails> getConsumerListByAID(int AID) { // TODO
-	 * Auto-generated method stub return conRepo.findConsumerByAID(AID); }
-	 */
-
-	
-
 }
