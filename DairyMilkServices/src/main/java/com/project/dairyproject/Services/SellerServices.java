@@ -1,6 +1,9 @@
 package com.project.dairyproject.Services;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -30,6 +33,12 @@ public class SellerServices {
 
 	@Autowired
 	private SellerRepository sellRepo;
+
+	@Autowired
+	private ConsumerDetails consumerDetails;
+
+	@Autowired
+	private ConsumerRepository conRepo;
 
 	public SellerDetails registerNewSeller(SellerDetails sellerDetails)
 			throws EmailAddressFoundException, UsernameFoundException, PhoneNumberFoundException {
@@ -115,4 +124,22 @@ public class SellerServices {
 	public List<SellerDetails> getSellerListByTown(String town) {
 		return sellRepo.findSellersByTown(town);
 	}
+
+	public Set<SellerDetails> getSellerListByLocality(String emailId) {
+
+		consumerDetails = conRepo.findConsumerDetailsByEmailIdOnly(emailId);
+		List<SellerDetails> sellersByPincode = sellRepo.findSellersByPincode(consumerDetails.getAddress().getPincode());
+		List<SellerDetails> sellersByTown = sellRepo.findSellersByTown(consumerDetails.getAddress().getTown());
+		List<SellerDetails> sellersByDistrict = sellRepo
+				.findSellersByDistrict(consumerDetails.getAddress().getDistrict());
+
+		Set<SellerDetails> concatinatedSellerSet = new HashSet<>();
+		concatinatedSellerSet.addAll(sellersByPincode);
+		concatinatedSellerSet.addAll(sellersByTown);
+		concatinatedSellerSet.addAll(sellersByDistrict);
+
+		return concatinatedSellerSet;
+
+	}
+
 }

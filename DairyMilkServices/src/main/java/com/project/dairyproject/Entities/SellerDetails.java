@@ -1,6 +1,7 @@
 package com.project.dairyproject.Entities;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,18 +14,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table
@@ -48,7 +44,7 @@ public class SellerDetails {
 	@Pattern(regexp = "^(Male|Female|Other)?", message = "Choose gender in between Male, Female, Other")
 	private String gender;
 
-	@NotEmpty(message = "Age is required, enter your present age")
+	@NotNull(message = "Age is required, please enter your current age")
 	@Range(min = 16, max = 60, message = "You are not eligible for this job")
 	private int age;
 
@@ -168,5 +164,29 @@ public class SellerDetails {
 	public void setAddress(AddressDetails address) {
 		this.address = address;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(address, age, emailId, firstName, gender, lastName, password, phoneNumber, sellerId, street,
+				username);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SellerDetails other = (SellerDetails) obj;
+		return Objects.equals(address, other.address) && age == other.age && Objects.equals(emailId, other.emailId)
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(gender, other.gender)
+				&& Objects.equals(lastName, other.lastName) && Objects.equals(password, other.password)
+				&& Objects.equals(phoneNumber, other.phoneNumber) && sellerId == other.sellerId
+				&& Objects.equals(street, other.street) && Objects.equals(username, other.username);
+	}
+	
+	
 
 }

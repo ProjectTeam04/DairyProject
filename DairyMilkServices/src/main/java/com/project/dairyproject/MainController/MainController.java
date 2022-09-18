@@ -2,10 +2,12 @@ package com.project.dairyproject.MainController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,8 +61,8 @@ public class MainController {
 	}
 
 	@GetMapping("/consumer/removeconsumeraccount")
-	public String deleteConsumerByConsumerId(@RequestParam Integer consumerId) {
-		return conServ.deleteConsumerDetailsByConsumerId(consumerId);
+	public String deleteConsumerByConsumerId(@RequestParam String emailId) {
+		return conServ.deleteConsumerDetailsByEmailId(emailId);
 	}
 
 	// Sellers Controller
@@ -83,17 +85,27 @@ public class MainController {
 	}
 
 	@PostMapping("/seller/fetchdetailsbyphonenumber")
-	public SellerDetails getSellerDetailsByPhoneNumber(@RequestBody LoginByPhone loginByPhone) {
+	public SellerDetails getSellerDetailsByPhoneNumberAndPassword(@RequestBody LoginByPhone loginByPhone) {
 		return sellServ.getSellerDetailsByPhoneNumberAndPassword(loginByPhone.getPhoneNumber(),
 				loginByPhone.getPassword());
 	}
 
 	@GetMapping("/seller/removeselleraccount")
-	public String deleteSellerBysellerId(@RequestParam Integer sellerId) {
-		return sellServ.deleteSellerDetailsBySellerId(sellerId);
+	public String deleteSellerBysellerId(@RequestParam String emailId) {
+		return sellServ.deleteSellerDetailsByEmailId(emailId);
 	}
 
-	// Administrator Controller
+	@GetMapping("/seller/fetchnearbysellers")
+	public Set<SellerDetails> getSellersByLocality(@RequestParam String emailId) {
+		return sellServ.getSellerListByLocality(emailId);
+	}
+
+	/*
+	 * Administrator Controller
+	 ***************************************************************************************
+	 * 
+	 * Consumer :
+	 */
 
 	@GetMapping("/admin/fetchconsumerbyemail")
 	public ConsumerDetails getConsumerDetailsByEmailId(@RequestParam String emailId) {
@@ -110,9 +122,9 @@ public class MainController {
 		return conServ.getConsumerDetailsByPhoneNumer(phoneNumber);
 	}
 
-	@GetMapping("/admin/removeaccountbyemail")
-	public String deleteConsumerByEmail(@RequestParam String emailId) {
-		return conServ.deleteConsumerDetailsByEmailId(emailId);
+	@GetMapping("/admin/removeconsumeraccount")
+	public String deleteConsumerByEmail(@RequestParam Integer consumerId) {
+		return conServ.deleteConsumerDetailsByConsumerId(consumerId);
 	}
 
 	@GetMapping("/admin/fetchallconsumers")
@@ -138,6 +150,60 @@ public class MainController {
 	@GetMapping("/admin/fetchconsumersbytown")
 	public List<ConsumerDetails> getAllConsumersByTown(String town) {
 		return conServ.getConsumerListByTown(town);
+	}
+
+	@GetMapping("/consumer/getconsumerbyaid")
+	public List<ConsumerDetails> getAllConsumerByAID(Integer aid) {
+		return conServ.getConsumerByAid(aid);
+	}
+
+	/*
+	 * Seller :
+	 */
+
+	@GetMapping("/admin/fetchsellerbyemail")
+	public SellerDetails getSellerDetailsByEmailId(@RequestParam String emailId) {
+		return sellServ.getSellerDetailsByEmailId(emailId);
+	}
+
+	@GetMapping("/admin/fetchsellerbyusername")
+	public SellerDetails getSellerDetailsByUsername(@RequestParam String username) {
+		return sellServ.getSellerDetailsByUsername(username);
+	}
+
+	@GetMapping("/admin/fetchsellerbyphone")
+	public SellerDetails getSellerDetailsByPhoneNumber(@RequestParam String phoneNumber) {
+		return sellServ.getSellerDetailsByPhoneNumer(phoneNumber);
+	}
+
+	@GetMapping("/admin/removeselleraccount")
+	public String deleteSellerByEmail(@RequestParam Integer sellerId) {
+		return sellServ.deleteSellerDetailsBySellerId(sellerId);
+	}
+
+	@GetMapping("/admin/fetchallsellers")
+	public List<SellerDetails> getAllSellers() {
+		return sellServ.getAllSellerList();
+	}
+
+	@GetMapping("/admin/fetchsellerbyname")
+	public List<SellerDetails> getAllSellersByName(String name) {
+		return sellServ.getSellerDetailsByFirstName(name);
+	}
+
+	@GetMapping("/admin/fetchsellersbypincode")
+	public List<SellerDetails> getAllSellersByPincode(@RequestParam String pincode) {
+		return sellServ.getSellerListByPincode(pincode);
+	}
+
+	@GetMapping("/admin/fetchsellersbydistrict")
+	public List<SellerDetails> getAllSellersByDistrict(String district) {
+		return sellServ.getSellerListByDistrict(district);
+	}
+
+	@GetMapping("/admin/fetchsellersbytown")
+	public List<SellerDetails> getAllSellersByTown(String town) {
+		return sellServ.getSellerListByTown(town);
 	}
 
 }

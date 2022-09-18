@@ -115,4 +115,8 @@ public class ConsumerServices {
 		return conRepo.findConsumersByTown(town);
 	}
 
+	public List<ConsumerDetails> getConsumerByAid(Integer aid) {
+		return conRepo.findConsumerDetailsByAid(aid);
+	}
+
 }

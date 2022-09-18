@@ -57,4 +57,7 @@ public interface ConsumerRepository extends CrudRepository<ConsumerDetails, Inte
 	@Query("select c from ConsumerDetails c where c.address.town = ?1")
 	public List<ConsumerDetails> findConsumersByTown(String town);
 
+	@Query("select c from ConsumerDetails c where c.address.AID = ?1")
+	public List<ConsumerDetails> findConsumerDetailsByAid(Integer aid);
+
 }
