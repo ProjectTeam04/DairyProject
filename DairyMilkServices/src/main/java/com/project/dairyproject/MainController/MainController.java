@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.dairyproject.Entities.ConsumerDetails;
-import com.project.dairyproject.MiscClasses.Login;
-import com.project.dairyproject.MiscClasses.LoginByPhone;
-import com.project.dairyproject.MiscClasses.LoginByUsername;
+import com.project.dairyproject.LoginEntities.Login;
+import com.project.dairyproject.LoginEntities.LoginByPhone;
+import com.project.dairyproject.LoginEntities.LoginByUsername;
 import com.project.dairyproject.Services.ConsumerServices;
 import com.project.dairyproject.UserDefinedExceptions.EmailAddressFoundException;
 import com.project.dairyproject.UserDefinedExceptions.PhoneNumberFoundException;
