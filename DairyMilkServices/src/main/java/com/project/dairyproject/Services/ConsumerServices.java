@@ -2,6 +2,7 @@ package com.project.dairyproject.Services;
 
 import java.util.List;
 
+import javax.swing.event.MenuKeyEvent;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,16 @@ import org.springframework.stereotype.Service;
 
 import com.project.dairyproject.Entities.AddressDetails;
 import com.project.dairyproject.Entities.ConsumerDetails;
+import com.project.dairyproject.Entities.DeletedConsumerRecords;
+import com.project.dairyproject.LoginEntities.ChangePassword;
+import com.project.dairyproject.LoginEntities.Login;
 import com.project.dairyproject.Repository.AddressRepository;
 import com.project.dairyproject.Repository.ConsumerRepository;
+import com.project.dairyproject.Repository.DeletedConsumerRepository;
 import com.project.dairyproject.UserDefinedExceptions.EmailAddressFoundException;
+import com.project.dairyproject.UserDefinedExceptions.IncorrectPasswordException;
 import com.project.dairyproject.UserDefinedExceptions.PhoneNumberFoundException;
+import com.project.dairyproject.UserDefinedExceptions.UnmatchedPasswordException;
 import com.project.dairyproject.UserDefinedExceptions.UsernameFoundException;
 
 @Service
@@ -29,6 +36,15 @@ public class ConsumerServices {
 
 	@Autowired
 	private AddressRepository addRepo;
+
+	@Autowired
+	private ConsumerDetails conDetails;
+
+	@Autowired
+	private DeletedConsumerRecords delConRecord;
+
+	@Autowired
+	private DeletedConsumerRepository delRepo;
 
 	public ConsumerDetails registerNewConsumer(ConsumerDetails consumerDetails)
 			throws EmailAddressFoundException, UsernameFoundException, PhoneNumberFoundException {
@@ -47,6 +63,7 @@ public class ConsumerServices {
 		} else if (addressDetails != null) {
 			consumerDetails.setAddress(addressDetails);
 			conRepo.save(consumerDetails);
+			addressDetails = null;
 			return conRepo.findConsumerDetailsByEmailAndPassword(consumerDetails.getEmailId(),
 					consumerDetails.getPassword());
 		} else {
@@ -80,17 +97,44 @@ public class ConsumerServices {
 		return conRepo.findConsumerDetailsByPhoneNumberOnly(phoneNumber);
 	}
 
-	public String deleteConsumerDetailsByEmailId(String emailId) {
-		if (conRepo.deleteConsumerDetailsByEmailId(emailId) == 1) {
-			return "Consumer account removed from database...";
+	public String deleteConsumerDetailsByEmailId(Login login) {
+		conDetails = conRepo.findConsumerDetailsByEmailAndPassword(login.getEmailId(), login.getPassword());
+
+		if (conDetails != null && conRepo.deleteConsumerDetailsByEmailId(conDetails.getEmailId()) == 1) {
+			delConRecord.setAddress(conDetails.getAddress());
+			delConRecord.setEmailId(conDetails.getEmailId());
+			delConRecord.setFirstName(conDetails.getFirstName());
+			delConRecord.setLastName(conDetails.getLastName());
+			delConRecord.setGender(conDetails.getGender());
+			delConRecord.setPhoneNumber(conDetails.getPhoneNumber());
+			delConRecord.setConsumerId(conDetails.getConsumerId());
+			delConRecord.setStreet(conDetails.getStreet());
+			delConRecord.setUsername(conDetails.getUsername());
+			delRepo.save(delConRecord);
+			conDetails = null;
+			delConRecord = null;
+			return "Consumer account removed !";
 		}
 
 		return "Account not found !";
 	}
 
 	public String deleteConsumerDetailsByConsumerId(Integer consumerId) {
-		if (conRepo.deleteConsumerDetailsByConsumerId(consumerId) == 1) {
-			return "Consumer account removed from database...";
+		conDetails = conRepo.findConsumerDetailsByConsumerId(consumerId);
+		if (conDetails != null && conRepo.deleteConsumerDetailsByConsumerId(consumerId) == 1) {
+			delConRecord.setAddress(conDetails.getAddress());
+			delConRecord.setEmailId(conDetails.getEmailId());
+			delConRecord.setFirstName(conDetails.getFirstName());
+			delConRecord.setLastName(conDetails.getLastName());
+			delConRecord.setGender(conDetails.getGender());
+			delConRecord.setPhoneNumber(conDetails.getPhoneNumber());
+			delConRecord.setConsumerId(conDetails.getConsumerId());
+			delConRecord.setStreet(conDetails.getStreet());
+			delConRecord.setUsername(conDetails.getUsername());
+			delRepo.save(delConRecord);
+			conDetails = null;
+			delConRecord = null;
+			return "Consumer account removed !";
 		}
 		return "Account not found !";
 	}
@@ -117,6 +161,49 @@ public class ConsumerServices {
 
 	public List<ConsumerDetails> getConsumerByAid(Integer aid) {
 		return conRepo.findConsumerDetailsByAid(aid);
+	}
+
+	public ConsumerDetails updateConsumerDetails(ConsumerDetails consumerDetails) {
+		conDetails = conRepo.findConsumerDetailsByEmailAndPassword(consumerDetails.getEmailId(),
+				consumerDetails.getPassword());
+
+		addressDetails = addRepo.findAddressDetailsByPincode(consumerDetails.getAddress().getPincode());
+		if (addressDetails != null) {
+			conDetails.setAddress(addressDetails);
+		} else {
+			addRepo.save(consumerDetails.getAddress());
+			addressDetails = addRepo.findAddressDetailsByPincode(consumerDetails.getAddress().getPincode());
+			conDetails.setAddress(addressDetails);
+		}
+
+		conDetails.setStreet(consumerDetails.getStreet());
+		conDetails.setFirstName(consumerDetails.getFirstName());
+		conDetails.setLastName(consumerDetails.getLastName());
+		conDetails.setPhoneNumber(consumerDetails.getPhoneNumber());
+		conDetails.setUsername(consumerDetails.getUsername());
+		conRepo.save(conDetails);
+
+		return conRepo.findConsumerDetailsByEmailAndPassword(consumerDetails.getEmailId(),
+				consumerDetails.getPassword());
+
+	}
+
+	public String changeConsumerPassword(ChangePassword changePassword) {
+		if (changePassword.getNewPassword().equals(changePassword.getConfirmPassword())) {
+			conDetails = conRepo.findConsumerDetailsByEmailAndPassword(changePassword.getEmailId(),
+					changePassword.getOldPassword());
+			if (conDetails != null) {
+				conDetails.setPassword(changePassword.getNewPassword());
+				conRepo.save(conDetails);
+				return "Password changed successfully.";
+			} else {
+				throw new IncorrectPasswordException("Incorrect old password !");
+			}
+
+		} else {
+			throw new UnmatchedPasswordException("Password does not match. Please enter correct password !");
+		}
+
 	}
 
 }

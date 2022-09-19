@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.PostRemove;
+import javax.persistence.PostUpdate;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.dairyproject.Entities.ConsumerDetails;
 import com.project.dairyproject.Entities.SellerDetails;
+import com.project.dairyproject.LoginEntities.ChangePassword;
 import com.project.dairyproject.LoginEntities.Login;
 import com.project.dairyproject.LoginEntities.LoginByPhone;
 import com.project.dairyproject.LoginEntities.LoginByUsername;
@@ -60,9 +63,19 @@ public class MainController {
 		return conServ.getConsumerDetailsByPhoneNumber(loginByPhone.getPhoneNumber(), loginByPhone.getPassword());
 	}
 
-	@GetMapping("/consumer/removeconsumeraccount")
-	public String deleteConsumerByConsumerId(@RequestParam String emailId) {
-		return conServ.deleteConsumerDetailsByEmailId(emailId);
+	@PostMapping("/consumer/updatedetails")
+	public ConsumerDetails updateConsumerDetails(@RequestBody ConsumerDetails consumerDetails) {
+		return conServ.updateConsumerDetails(consumerDetails);
+	}
+
+	@PostMapping("/consumer/changepassword")
+	public String changeConsumerPassword(@RequestBody ChangePassword changePassword) {
+		return conServ.changeConsumerPassword(changePassword);
+	}
+
+	@PostMapping("/consumer/removeaccount")
+	public String deleteConsumerByEmailId(@RequestBody Login login) {
+		return conServ.deleteConsumerDetailsByEmailId(login);
 	}
 
 	// Sellers Controller
@@ -90,9 +103,19 @@ public class MainController {
 				loginByPhone.getPassword());
 	}
 
-	@GetMapping("/seller/removeselleraccount")
-	public String deleteSellerBysellerId(@RequestParam String emailId) {
-		return sellServ.deleteSellerDetailsByEmailId(emailId);
+	@PostMapping("/seller/updatedetails")
+	public SellerDetails updateSellerDetails(@RequestBody SellerDetails sellerDetails) {
+		return sellServ.updateSellerDetails(sellerDetails);
+	}
+
+	@PostMapping("/seller/changepassword")
+	public String changeSellerPassword(@RequestBody ChangePassword changePassword) {
+		return sellServ.changeSellerPassword(changePassword);
+	}
+
+	@PostMapping("/seller/removeaccount")
+	public String deleteSellerByEmailId(@RequestBody Login login) {
+		return sellServ.deleteSellerDetailsByEmailId(login);
 	}
 
 	@GetMapping("/seller/fetchnearbysellers")
@@ -123,7 +146,7 @@ public class MainController {
 	}
 
 	@GetMapping("/admin/removeconsumeraccount")
-	public String deleteConsumerByEmail(@RequestParam Integer consumerId) {
+	public String deleteConsumerById(@RequestParam Integer consumerId) {
 		return conServ.deleteConsumerDetailsByConsumerId(consumerId);
 	}
 
@@ -177,7 +200,7 @@ public class MainController {
 	}
 
 	@GetMapping("/admin/removeselleraccount")
-	public String deleteSellerByEmail(@RequestParam Integer sellerId) {
+	public String deleteSellerById(@RequestParam Integer sellerId) {
 		return sellServ.deleteSellerDetailsBySellerId(sellerId);
 	}
 

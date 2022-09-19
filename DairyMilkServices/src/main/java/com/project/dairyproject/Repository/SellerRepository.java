@@ -53,4 +53,7 @@ public interface SellerRepository extends CrudRepository<SellerDetails, Integer>
 	@Query("select s from SellerDetails s where s.address.town = ?1")
 	public List<SellerDetails> findSellersByTown(String town);
 
+	@Query("select s from SellerDetails s where s.sellerId = ?1")
+	public SellerDetails findSellerDetailsBySellerId(Integer sellerId);
+
 }
