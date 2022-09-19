@@ -55,6 +55,9 @@ public class SellerServices {
 	@Autowired
 	private DeletedSellerRecords delSelRecord;
 
+	@Autowired
+	private DeletedRecordsServices delSelServ;
+
 	public SellerDetails registerNewSeller(SellerDetails sellerDetails)
 			throws EmailAddressFoundException, UsernameFoundException, PhoneNumberFoundException {
 		int email = sellRepo.findSellerDetailsByEmailId(sellerDetails.getEmailId());
@@ -107,46 +110,11 @@ public class SellerServices {
 	}
 
 	public String deleteSellerDetailsByEmailId(Login login) {
-		sellDetails = sellRepo.findSellerDetailsByEmailAndPassword(login.getEmailId(), login.getPassword());
-		if (sellDetails != null && sellRepo.deleteSellerDetailsByEmailId(sellDetails.getEmailId()) == 1) {
-			delSelRecord.setAddress(sellDetails.getAddress());
-			delSelRecord.setAge(sellDetails.getAge());
-			delSelRecord.setEmailId(sellDetails.getEmailId());
-			delSelRecord.setFirstName(sellDetails.getFirstName());
-			delSelRecord.setLastName(sellDetails.getLastName());
-			delSelRecord.setGender(sellDetails.getGender());
-			delSelRecord.setPhoneNumber(sellDetails.getPhoneNumber());
-			delSelRecord.setSellerId(sellDetails.getSellerId());
-			delSelRecord.setStreet(sellDetails.getStreet());
-			delSelRecord.setUsername(sellDetails.getUsername());
-			delRepo.save(delSelRecord);
-			sellDetails = null;
-			delSelRecord = null;
-			return "Seller account removed !";
-		}
-
-		return "Account not found !";
+		return delSelServ.deleteSellerByEmailId(login);
 	}
 
 	public String deleteSellerDetailsBySellerId(Integer sellerId) {
-		sellDetails = sellRepo.findSellerDetailsBySellerId(sellerId);
-		if (sellRepo.deleteSellerDetailsBySellerId(sellerId) == 1) {
-			delSelRecord.setAddress(sellDetails.getAddress());
-			delSelRecord.setAge(sellDetails.getAge());
-			delSelRecord.setEmailId(sellDetails.getEmailId());
-			delSelRecord.setFirstName(sellDetails.getFirstName());
-			delSelRecord.setLastName(sellDetails.getLastName());
-			delSelRecord.setGender(sellDetails.getGender());
-			delSelRecord.setPhoneNumber(sellDetails.getPhoneNumber());
-			delSelRecord.setSellerId(sellDetails.getSellerId());
-			delSelRecord.setStreet(sellDetails.getStreet());
-			delSelRecord.setUsername(sellDetails.getUsername());
-			delRepo.save(delSelRecord);
-			sellDetails = null;
-			delSelRecord = null;
-			return "Seller account removed !";
-		}
-		return "Account not found !";
+		return delSelServ.deleteSellerrBySellerId(sellerId);
 	}
 
 	public List<SellerDetails> getAllSellerList() {

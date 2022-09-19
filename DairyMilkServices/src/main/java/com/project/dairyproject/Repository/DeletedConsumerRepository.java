@@ -12,7 +12,7 @@ import com.project.dairyproject.Entities.DeletedConsumerRecords;
 public interface DeletedConsumerRepository extends CrudRepository<DeletedConsumerRecords, Integer> {
 
 	@Query("select c from DeletedConsumerRecords c")
-	public List<DeletedConsumerRecords> findDeletedConsumerRecords();
+	public List<DeletedConsumerRecords> findAllDeletedConsumerRecords();
 
 	@Query("select c from DeletedConsumerRecords c where c.firstName = ?1")
 	public List<DeletedConsumerRecords> findDeletedConsumerRecordsByFirstName(String firstName);

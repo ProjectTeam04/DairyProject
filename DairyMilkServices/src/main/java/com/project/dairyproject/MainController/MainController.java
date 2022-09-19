@@ -18,12 +18,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.dairyproject.Entities.ConsumerDetails;
+import com.project.dairyproject.Entities.DeletedConsumerRecords;
+import com.project.dairyproject.Entities.DeletedSellerRecords;
 import com.project.dairyproject.Entities.SellerDetails;
 import com.project.dairyproject.LoginEntities.ChangePassword;
 import com.project.dairyproject.LoginEntities.Login;
 import com.project.dairyproject.LoginEntities.LoginByPhone;
 import com.project.dairyproject.LoginEntities.LoginByUsername;
 import com.project.dairyproject.Services.ConsumerServices;
+import com.project.dairyproject.Services.DeletedRecordsServices;
 import com.project.dairyproject.Services.SellerServices;
 import com.project.dairyproject.UserDefinedExceptions.EmailAddressFoundException;
 import com.project.dairyproject.UserDefinedExceptions.PhoneNumberFoundException;
@@ -38,6 +41,9 @@ public class MainController {
 
 	@Autowired
 	private SellerServices sellServ;
+
+	@Autowired
+	private DeletedRecordsServices delServ;
 
 	// Consumers Controller
 
@@ -175,9 +181,24 @@ public class MainController {
 		return conServ.getConsumerListByTown(town);
 	}
 
-	@GetMapping("/consumer/getconsumerbyaid")
+	@GetMapping("/admin/getconsumerbyaid")
 	public List<ConsumerDetails> getAllConsumerByAID(Integer aid) {
 		return conServ.getConsumerByAid(aid);
+	}
+
+	@GetMapping("/admin/getdeletedconsumers")
+	public List<DeletedConsumerRecords> getAllDeletedConsumers() {
+		return delServ.getDeletedAllConsumerRecords();
+	}
+
+	@GetMapping("/admin/getdeletedconsumerbyemail")
+	public DeletedConsumerRecords getDeletedConsumerRecordsByEmail(String emailId) {
+		return delServ.getDeletedConsumerRecordByEmailId(emailId);
+	}
+
+	@GetMapping("/admin/getdeletedconsumerbyname")
+	public List<DeletedConsumerRecords> getDeletedConsumerRecordsByName(String name) {
+		return delServ.getDeletedConsumerRecordsByFirstName(name);
 	}
 
 	/*
@@ -227,6 +248,21 @@ public class MainController {
 	@GetMapping("/admin/fetchsellersbytown")
 	public List<SellerDetails> getAllSellersByTown(String town) {
 		return sellServ.getSellerListByTown(town);
+	}
+
+	@GetMapping("/admin/getdeletedsellers")
+	public List<DeletedSellerRecords> getAllDeletedSellers() {
+		return delServ.getDeletedAllSellerRecords();
+	}
+
+	@GetMapping("/admin/getdeletedsellerbyname")
+	public List<DeletedSellerRecords> getAllDeletedSellerRecordsByName(String name) {
+		return delServ.getDeletedSellerRecordsByFirstName(name);
+	}
+
+	@GetMapping("admin/getdeletedsellerbyemail")
+	public DeletedSellerRecords getDeletedSellerRecordByEmailId(String emailId) {
+		return delServ.getDeletedSellerRecordByEmailId(emailId);
 	}
 
 }

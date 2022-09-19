@@ -40,11 +40,14 @@ public class ConsumerServices {
 	@Autowired
 	private ConsumerDetails conDetails;
 
-	@Autowired
-	private DeletedConsumerRecords delConRecord;
+//	@Autowired
+//	private DeletedConsumerRecords delConRecord;
+//
+//	@Autowired
+//	private DeletedConsumerRepository delRepo;
 
 	@Autowired
-	private DeletedConsumerRepository delRepo;
+	private DeletedRecordsServices delServ;
 
 	public ConsumerDetails registerNewConsumer(ConsumerDetails consumerDetails)
 			throws EmailAddressFoundException, UsernameFoundException, PhoneNumberFoundException {
@@ -71,6 +74,7 @@ public class ConsumerServices {
 			return conRepo.findConsumerDetailsByEmailAndPassword(consumerDetails.getEmailId(),
 					consumerDetails.getPassword());
 		}
+
 	}
 
 	public ConsumerDetails getConsumerDetailsByEmailAndPassword(String emailId, String password) {
@@ -98,45 +102,11 @@ public class ConsumerServices {
 	}
 
 	public String deleteConsumerDetailsByEmailId(Login login) {
-		conDetails = conRepo.findConsumerDetailsByEmailAndPassword(login.getEmailId(), login.getPassword());
-
-		if (conDetails != null && conRepo.deleteConsumerDetailsByEmailId(conDetails.getEmailId()) == 1) {
-			delConRecord.setAddress(conDetails.getAddress());
-			delConRecord.setEmailId(conDetails.getEmailId());
-			delConRecord.setFirstName(conDetails.getFirstName());
-			delConRecord.setLastName(conDetails.getLastName());
-			delConRecord.setGender(conDetails.getGender());
-			delConRecord.setPhoneNumber(conDetails.getPhoneNumber());
-			delConRecord.setConsumerId(conDetails.getConsumerId());
-			delConRecord.setStreet(conDetails.getStreet());
-			delConRecord.setUsername(conDetails.getUsername());
-			delRepo.save(delConRecord);
-			conDetails = null;
-			delConRecord = null;
-			return "Consumer account removed !";
-		}
-
-		return "Account not found !";
+		return delServ.deleteConsumerByEmailId(login);
 	}
 
 	public String deleteConsumerDetailsByConsumerId(Integer consumerId) {
-		conDetails = conRepo.findConsumerDetailsByConsumerId(consumerId);
-		if (conDetails != null && conRepo.deleteConsumerDetailsByConsumerId(consumerId) == 1) {
-			delConRecord.setAddress(conDetails.getAddress());
-			delConRecord.setEmailId(conDetails.getEmailId());
-			delConRecord.setFirstName(conDetails.getFirstName());
-			delConRecord.setLastName(conDetails.getLastName());
-			delConRecord.setGender(conDetails.getGender());
-			delConRecord.setPhoneNumber(conDetails.getPhoneNumber());
-			delConRecord.setConsumerId(conDetails.getConsumerId());
-			delConRecord.setStreet(conDetails.getStreet());
-			delConRecord.setUsername(conDetails.getUsername());
-			delRepo.save(delConRecord);
-			conDetails = null;
-			delConRecord = null;
-			return "Consumer account removed !";
-		}
-		return "Account not found !";
+		return delServ.deleteConsumerByConsumerId(consumerId);
 	}
 
 	public List<ConsumerDetails> getAllConsumerList() {
@@ -182,7 +152,7 @@ public class ConsumerServices {
 		conDetails.setPhoneNumber(consumerDetails.getPhoneNumber());
 		conDetails.setUsername(consumerDetails.getUsername());
 		conRepo.save(conDetails);
-
+		conDetails = null;
 		return conRepo.findConsumerDetailsByEmailAndPassword(consumerDetails.getEmailId(),
 				consumerDetails.getPassword());
 
@@ -195,6 +165,7 @@ public class ConsumerServices {
 			if (conDetails != null) {
 				conDetails.setPassword(changePassword.getNewPassword());
 				conRepo.save(conDetails);
+				conDetails = null;
 				return "Password changed successfully.";
 			} else {
 				throw new IncorrectPasswordException("Incorrect old password !");
