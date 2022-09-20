@@ -14,10 +14,10 @@ public interface DeletedConsumerRepository extends CrudRepository<DeletedConsume
 	@Query("select c from DeletedConsumerRecords c")
 	public List<DeletedConsumerRecords> findAllDeletedConsumerRecords();
 
-	@Query("select c from DeletedConsumerRecords c where c.firstName = ?1")
+	@Query("select c from DeletedConsumerRecords c where c.firstName like %?1%")
 	public List<DeletedConsumerRecords> findDeletedConsumerRecordsByFirstName(String firstName);
 
-	@Query("select c from DeletedConsumerRecords c where c.emailId = ?1")
+	@Query("select c from DeletedConsumerRecords c where c.emailId like %?1%")
 	public DeletedConsumerRecords findDeletedConsumerByEmailId(String emailId);
 
 }

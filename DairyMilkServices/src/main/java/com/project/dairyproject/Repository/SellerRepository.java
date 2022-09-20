@@ -25,7 +25,7 @@ public interface SellerRepository extends CrudRepository<SellerDetails, Integer>
 	@Query("select count(s) from SellerDetails s where s.phoneNumber = ?1")
 	public int findSellerDetailsByPhoneNumber(String phoneNumber);
 
-	@Query("select s from SellerDetails s where s.emailId = ?1")
+	@Query("select s from SellerDetails s where s.emailId like %?1%")
 	public SellerDetails findSellerDetailsByEmailIdOnly(String emailId);
 
 	@Query("select s from SellerDetails s where s.username = ?1")
@@ -41,7 +41,7 @@ public interface SellerRepository extends CrudRepository<SellerDetails, Integer>
 	@Query("select s from SellerDetails s")
 	public List<SellerDetails> findAllSellerDetails();
 
-	@Query("select s from SellerDetails s where firstName = ?1")
+	@Query("select s from SellerDetails s where firstName like %?1%")
 	public List<SellerDetails> findSellerByName(String name);
 
 	@Query("select s from SellerDetails s where s.address.pincode = ?1")

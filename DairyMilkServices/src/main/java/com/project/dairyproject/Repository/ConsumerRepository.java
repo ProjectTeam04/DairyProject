@@ -29,7 +29,7 @@ public interface ConsumerRepository extends CrudRepository<ConsumerDetails, Inte
 	@Query("select count(c) from ConsumerDetails c where c.phoneNumber = ?1")
 	public int findConsumerDetailsByPhoneNumber(String phoneNumber);
 
-	@Query("select c from ConsumerDetails c where c.emailId = ?1")
+	@Query("select c from ConsumerDetails c where c.emailId like %?1%")
 	public ConsumerDetails findConsumerDetailsByEmailIdOnly(String emailId);
 
 	@Query("select c from ConsumerDetails c where c.username = ?1")
@@ -45,7 +45,7 @@ public interface ConsumerRepository extends CrudRepository<ConsumerDetails, Inte
 	@Query("select c from ConsumerDetails c")
 	public List<ConsumerDetails> findAllConsumerDetails();
 
-	@Query("select c from ConsumerDetails c where firstName = ?1")
+	@Query("select c from ConsumerDetails c where firstName like %?1%")
 	public List<ConsumerDetails> findConsumerByName(String name);
 
 	@Query("select c from ConsumerDetails c where c.address.pincode = ?1")

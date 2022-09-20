@@ -1,7 +1,9 @@
 package com.project.dairyproject.MainController;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.PostRemove;
@@ -18,15 +20,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.dairyproject.Entities.ConsumerDetails;
+import com.project.dairyproject.Entities.ConsumerQuery;
 import com.project.dairyproject.Entities.DeletedConsumerRecords;
 import com.project.dairyproject.Entities.DeletedSellerRecords;
+import com.project.dairyproject.Entities.FeedBackDetails;
 import com.project.dairyproject.Entities.SellerDetails;
+import com.project.dairyproject.Entities.SellerQuery;
 import com.project.dairyproject.LoginEntities.ChangePassword;
 import com.project.dairyproject.LoginEntities.Login;
 import com.project.dairyproject.LoginEntities.LoginByPhone;
 import com.project.dairyproject.LoginEntities.LoginByUsername;
 import com.project.dairyproject.Services.ConsumerServices;
 import com.project.dairyproject.Services.DeletedRecordsServices;
+import com.project.dairyproject.Services.FeedBackServices;
+import com.project.dairyproject.Services.QueryServices;
 import com.project.dairyproject.Services.SellerServices;
 import com.project.dairyproject.UserDefinedExceptions.EmailAddressFoundException;
 import com.project.dairyproject.UserDefinedExceptions.PhoneNumberFoundException;
@@ -44,6 +51,12 @@ public class MainController {
 
 	@Autowired
 	private DeletedRecordsServices delServ;
+
+	@Autowired
+	private FeedBackServices feedServ;
+
+	@Autowired
+	private QueryServices queryServ;
 
 	// Consumers Controller
 
@@ -127,6 +140,25 @@ public class MainController {
 	@GetMapping("/seller/fetchnearbysellers")
 	public Set<SellerDetails> getSellersByLocality(@RequestParam String emailId) {
 		return sellServ.getSellerListByLocality(emailId);
+	}
+
+	/*
+	 * FeedBack and Queries
+	 */
+
+	@PostMapping("/feedback/submitfeedback")
+	public String insertNewFeedBack(@Valid @RequestBody FeedBackDetails feedBackDetails) {
+		return feedServ.insertNewFeedBackDetails(feedBackDetails);
+	}
+
+	@PostMapping("/consumer/query/submitquery")
+	public String insertNewConsumerQuery(@Valid @RequestBody ConsumerQuery consumerQuery) {
+		return queryServ.insertNewConsumerQuery(consumerQuery);
+	}
+
+	@PostMapping("/seller/query/submitquery")
+	public String insertNewSellerQuery(@Valid @RequestBody SellerQuery sellerQuery) {
+		return queryServ.insertNewSellerQuery(sellerQuery);
 	}
 
 	/*
@@ -231,7 +263,7 @@ public class MainController {
 	}
 
 	@GetMapping("/admin/fetchsellerbyname")
-	public List<SellerDetails> getAllSellersByName(String name) {
+	public List<SellerDetails> getAllSellersByName(@RequestParam String name) {
 		return sellServ.getSellerDetailsByFirstName(name);
 	}
 
@@ -241,12 +273,12 @@ public class MainController {
 	}
 
 	@GetMapping("/admin/fetchsellersbydistrict")
-	public List<SellerDetails> getAllSellersByDistrict(String district) {
+	public List<SellerDetails> getAllSellersByDistrict(@RequestParam String district) {
 		return sellServ.getSellerListByDistrict(district);
 	}
 
 	@GetMapping("/admin/fetchsellersbytown")
-	public List<SellerDetails> getAllSellersByTown(String town) {
+	public List<SellerDetails> getAllSellersByTown(@RequestParam String town) {
 		return sellServ.getSellerListByTown(town);
 	}
 
@@ -256,13 +288,32 @@ public class MainController {
 	}
 
 	@GetMapping("/admin/getdeletedsellerbyname")
-	public List<DeletedSellerRecords> getAllDeletedSellerRecordsByName(String name) {
+	public List<DeletedSellerRecords> getAllDeletedSellerRecordsByName(@RequestParam String name) {
 		return delServ.getDeletedSellerRecordsByFirstName(name);
 	}
 
 	@GetMapping("admin/getdeletedsellerbyemail")
-	public DeletedSellerRecords getDeletedSellerRecordByEmailId(String emailId) {
+	public DeletedSellerRecords getDeletedSellerRecordByEmailId(@RequestParam String emailId) {
 		return delServ.getDeletedSellerRecordByEmailId(emailId);
+	}
+
+	/*
+	 * Feedback
+	 */
+
+	@GetMapping("/admin/feedback/id")
+	public FeedBackDetails getFeedBackById(@RequestParam Integer fid) {
+		return feedServ.getFeedBackDetailsById(fid);
+	}
+
+	@GetMapping("/admin/feedback/name")
+	public List<FeedBackDetails> getFeedBackByName(@RequestParam String name) {
+		return feedServ.getFeedBackDetailsByname(name);
+	}
+
+	@GetMapping("/admin/feedback/subject")
+	public List<FeedBackDetails> getFeedBackBySubject(@RequestParam String subject) {
+		return feedServ.getFeedBackDetailsBySubject(subject);
 	}
 
 }
