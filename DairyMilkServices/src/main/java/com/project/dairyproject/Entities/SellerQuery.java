@@ -31,7 +31,6 @@ public class SellerQuery {
 	@Lob
 	private String message;
 
-	@NotEmpty(message = "Date and Time cannot be empty.")
 	private String dateTime;
 
 	public int getQID() {

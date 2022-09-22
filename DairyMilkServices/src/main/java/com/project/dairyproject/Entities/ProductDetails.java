@@ -1,10 +1,17 @@
 package com.project.dairyproject.Entities;
 
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -24,15 +31,19 @@ public class ProductDetails {
 
 	@NotEmpty(message = "Product Name is required")
 	@Column(length = 15, unique = true)
-	@Pattern(regexp = "^[a-zA-Z0-9]{4,15}$", message = "Product name must be in betweem 4 to 15 (special characters are not allowed)")
+	@Pattern(regexp = "^[a-zA-Z_ ]{4,20}$", message = "Product name must be in betweem 4 to 20 (special characters are not allowed)")
 	private String name;
 
 	@NotNull(message = "Price cannot be empty, please enter price for your product")
 	@Range(min = 8, message = "Price should be more than 8 Rs.")
 	private float price;
 
-	@NotNull(message = "Enter maximum quantity available to sell")
-	private float maxQuantity;
+	@NotEmpty(message = "Unit cannot be empty. Please select valid unit for selected product.")
+	@Pattern(regexp = "^(L|kg)?", message = "Incorrect unit selected")
+	private String unit;
+
+	@ManyToMany(mappedBy = "productDetails", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<SellerDetails> sellerDetails;
 
 	public int getPID() {
 		return PID;
@@ -58,12 +69,20 @@ public class ProductDetails {
 		this.price = price;
 	}
 
-	public float getMaxQuantity() {
-		return maxQuantity;
+	public String getUnit() {
+		return unit;
 	}
 
-	public void setMaxQuantity(float maxQuantity) {
-		this.maxQuantity = maxQuantity;
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
+	public Set<SellerDetails> getSellerDetails() {
+		return sellerDetails;
+	}
+
+	public void setSellerDetails(Set<SellerDetails> sellerDetails) {
+		this.sellerDetails = sellerDetails;
 	}
 
 }

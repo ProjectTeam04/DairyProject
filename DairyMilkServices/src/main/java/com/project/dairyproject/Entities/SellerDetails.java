@@ -1,15 +1,20 @@
 package com.project.dairyproject.Entities;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -21,6 +26,8 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table
@@ -76,6 +83,19 @@ public class SellerDetails {
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "AID")
 	private AddressDetails address;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "seller_product_details", joinColumns = @JoinColumn(name = "sellerId"), inverseJoinColumns = @JoinColumn(name = "productId"))
+	@JsonIgnore
+	private Set<ProductDetails> productDetails;
+
+	public Set<ProductDetails> getProductDetails() {
+		return productDetails;
+	}
+
+	public void setProductDetails(Set<ProductDetails> productDetails) {
+		this.productDetails = productDetails;
+	}
 
 	public int getSellerId() {
 		return sellerId;
@@ -164,29 +184,5 @@ public class SellerDetails {
 	public void setAddress(AddressDetails address) {
 		this.address = address;
 	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(address, age, emailId, firstName, gender, lastName, password, phoneNumber, sellerId, street,
-				username);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SellerDetails other = (SellerDetails) obj;
-		return Objects.equals(address, other.address) && age == other.age && Objects.equals(emailId, other.emailId)
-				&& Objects.equals(firstName, other.firstName) && Objects.equals(gender, other.gender)
-				&& Objects.equals(lastName, other.lastName) && Objects.equals(password, other.password)
-				&& Objects.equals(phoneNumber, other.phoneNumber) && sellerId == other.sellerId
-				&& Objects.equals(street, other.street) && Objects.equals(username, other.username);
-	}
-	
-	
 
 }

@@ -95,7 +95,7 @@ public class QueryServices {
 	}
 
 	public List<SellerQuery> getSellerQueriesBySellerEmailId(String emailId) {
-		return sellQueryRepo.findSellerQueriesByDateTime(emailId);
+		return sellQueryRepo.findSellerQueriesBySellerEmailId(emailId);
 	}
 
 }

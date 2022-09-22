@@ -2,6 +2,7 @@ package com.project.dairyproject.Services;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.project.dairyproject.Entities.AddressDetails;
 import com.project.dairyproject.Entities.ConsumerDetails;
 import com.project.dairyproject.Entities.DeletedSellerRecords;
+import com.project.dairyproject.Entities.ProductDetails;
 import com.project.dairyproject.Entities.SellerDetails;
+import com.project.dairyproject.Entities.SellerProducts;
 import com.project.dairyproject.LoginEntities.ChangePassword;
 import com.project.dairyproject.LoginEntities.Login;
 import com.project.dairyproject.Repository.AddressRepository;
@@ -24,6 +27,7 @@ import com.project.dairyproject.Repository.SellerRepository;
 import com.project.dairyproject.UserDefinedExceptions.EmailAddressFoundException;
 import com.project.dairyproject.UserDefinedExceptions.IncorrectPasswordException;
 import com.project.dairyproject.UserDefinedExceptions.PhoneNumberFoundException;
+import com.project.dairyproject.UserDefinedExceptions.ProductNotFoundException;
 import com.project.dairyproject.UserDefinedExceptions.UnmatchedPasswordException;
 import com.project.dairyproject.UserDefinedExceptions.UsernameFoundException;
 
@@ -57,6 +61,12 @@ public class SellerServices {
 
 	@Autowired
 	private DeletedRecordsServices delSelServ;
+
+	@Autowired
+	private ProductDetails proDetails;
+
+	@Autowired
+	private ProductServices proServ;
 
 	public SellerDetails registerNewSeller(SellerDetails sellerDetails)
 			throws EmailAddressFoundException, UsernameFoundException, PhoneNumberFoundException {
@@ -194,6 +204,49 @@ public class SellerServices {
 			throw new UnmatchedPasswordException("Password does not match. Please enter correct password !");
 		}
 
+	}
+
+	public Set<ProductDetails> addProducts(SellerProducts sellerProducts) {
+		sellDetails = sellRepo.findSellerDetailsByEmailAndPassword(sellerProducts.getEmailId(),
+				sellerProducts.getPassword());
+
+		if (sellDetails != null) {
+			List<String> list = new ArrayList<String>(sellerProducts.getProductDetails());
+
+			Set<ProductDetails> productDetailsSet = sellDetails.getProductDetails();
+			Set<SellerDetails> sellerList = new HashSet<>();
+
+			for (int i = 0; i < list.size(); i++) {
+				proDetails = proServ.getProductDetailsByName(list.get(i));
+				if (proDetails != null) {
+					sellerList = proDetails.getSellerDetails();
+					sellerList.add(sellDetails);
+					proDetails.setSellerDetails(sellerList);
+					proServ.updateProductDetailDetails(proDetails);
+					productDetailsSet.add(proDetails);
+				} else {
+					throw new ProductNotFoundException(list.get(i) + " product not found !");
+				}
+			}
+			sellDetails.setProductDetails(productDetailsSet);
+			sellRepo.save(sellDetails);
+			proDetails = null;
+			sellerList = null;
+			productDetailsSet = null;
+			sellDetails = null;
+			return sellRepo.findSellerDetailsByEmailIdOnly(sellerProducts.getEmailId()).getProductDetails();
+		} else {
+
+		}
+
+	}
+
+	public Set<ProductDetails> getSellerAllProductDetails(String emailId) {
+		return sellRepo.findSellerDetailsByEmailIdOnly(emailId).getProductDetails();
+	}
+
+	public List<SellerDetails> getSellersByProductName(String name) {
+		return null;
 	}
 
 }

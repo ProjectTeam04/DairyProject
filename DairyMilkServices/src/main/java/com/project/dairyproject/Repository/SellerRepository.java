@@ -1,8 +1,12 @@
 package com.project.dairyproject.Repository;
 
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+
+import com.project.dairyproject.Entities.ProductDetails;
 import com.project.dairyproject.Entities.SellerDetails;
 
 public interface SellerRepository extends CrudRepository<SellerDetails, Integer> {

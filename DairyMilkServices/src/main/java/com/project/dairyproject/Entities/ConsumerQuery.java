@@ -36,7 +36,6 @@ public class ConsumerQuery {
 	@Lob
 	private String message;
 
-	//@NotNull(message = "Date and Time cannot be empty.")
 	private String dateTime;
 
 	public int getQID() {

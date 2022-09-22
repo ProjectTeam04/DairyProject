@@ -24,7 +24,9 @@ import com.project.dairyproject.Entities.ConsumerQuery;
 import com.project.dairyproject.Entities.DeletedConsumerRecords;
 import com.project.dairyproject.Entities.DeletedSellerRecords;
 import com.project.dairyproject.Entities.FeedBackDetails;
+import com.project.dairyproject.Entities.ProductDetails;
 import com.project.dairyproject.Entities.SellerDetails;
+import com.project.dairyproject.Entities.SellerProducts;
 import com.project.dairyproject.Entities.SellerQuery;
 import com.project.dairyproject.LoginEntities.ChangePassword;
 import com.project.dairyproject.LoginEntities.Login;
@@ -33,11 +35,14 @@ import com.project.dairyproject.LoginEntities.LoginByUsername;
 import com.project.dairyproject.Services.ConsumerServices;
 import com.project.dairyproject.Services.DeletedRecordsServices;
 import com.project.dairyproject.Services.FeedBackServices;
+import com.project.dairyproject.Services.ProductServices;
 import com.project.dairyproject.Services.QueryServices;
 import com.project.dairyproject.Services.SellerServices;
 import com.project.dairyproject.UserDefinedExceptions.EmailAddressFoundException;
 import com.project.dairyproject.UserDefinedExceptions.PhoneNumberFoundException;
 import com.project.dairyproject.UserDefinedExceptions.UsernameFoundException;
+
+import net.bytebuddy.asm.Advice.Return;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:9090")
@@ -57,6 +62,9 @@ public class MainController {
 
 	@Autowired
 	private QueryServices queryServ;
+
+	@Autowired
+	private ProductServices proServ;
 
 	// Consumers Controller
 
@@ -95,6 +103,11 @@ public class MainController {
 	@PostMapping("/consumer/removeaccount")
 	public String deleteConsumerByEmailId(@RequestBody Login login) {
 		return conServ.deleteConsumerDetailsByEmailId(login);
+	}
+
+	@GetMapping("/consumer/getallproducts")
+	public Set<ProductDetails> getAllProductDetails() {
+		return proServ.getAllProductDetails();
 	}
 
 	// Sellers Controller
@@ -142,6 +155,15 @@ public class MainController {
 		return sellServ.getSellerListByLocality(emailId);
 	}
 
+	@PostMapping("/seller/products/addproducts")
+	public Set<ProductDetails> addProducts(@RequestBody SellerProducts sellerProducts) {
+		return sellServ.addProducts(sellerProducts);
+	}
+
+	@GetMapping("/seller/products/getallproducts")
+	public Set<ProductDetails> getSellerALlProductDetails(@RequestParam String emailId) {
+		return sellServ.getSellerAllProductDetails(emailId);
+	}
 	/*
 	 * FeedBack and Queries
 	 */
@@ -298,7 +320,7 @@ public class MainController {
 	}
 
 	/*
-	 * Feedback
+	 * Feedback and Query
 	 */
 
 	@GetMapping("/admin/feedback/id")
@@ -314,6 +336,45 @@ public class MainController {
 	@GetMapping("/admin/feedback/subject")
 	public List<FeedBackDetails> getFeedBackBySubject(@RequestParam String subject) {
 		return feedServ.getFeedBackDetailsBySubject(subject);
+	}
+
+	@GetMapping("/admin/consumer/query")
+	public List<ConsumerQuery> getAllConsumerQueries() {
+		return queryServ.getAllConsumerQueries();
+	}
+
+	@GetMapping("/admin/consumer/queriesbyemailid")
+	public List<ConsumerQuery> getQueriesByConsumerEmailId(@RequestParam String emailId) {
+		return queryServ.getConsumerQueriesByConsumerEmailId(emailId);
+	}
+
+	@GetMapping("/admin/consumer/queriesbydatetime")
+	public List<ConsumerQuery> getConsumerQueriesByDateTime(@RequestParam String dateTime) {
+		return queryServ.getConsumerQueriesByDateTime(dateTime);
+	}
+
+	@GetMapping("/admin/seller/query")
+	public List<SellerQuery> getAllSellerQueries() {
+		return queryServ.getAllSellerQueries();
+	}
+
+	@GetMapping("/admin/seller/queriesbyemailid")
+	public List<SellerQuery> getQueriesBySellerEmailId(@RequestParam String emailId) {
+		return queryServ.getSellerQueriesBySellerEmailId(emailId);
+	}
+
+	@GetMapping("/admin/seller/queriesbydatetime")
+	public List<SellerQuery> getSellerQueriesByDateTime(@RequestParam String dateTime) {
+		return queryServ.getSellerQueriesByDateTime(dateTime);
+	}
+
+	/*
+	 * Products
+	 */
+
+	@PostMapping("/admin/products/addnewproduct")
+	public String insertNewProductDetails(@RequestBody ProductDetails productDetails) {
+		return proServ.insertNewProductDetails(productDetails);
 	}
 
 }
