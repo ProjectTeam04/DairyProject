@@ -19,12 +19,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.dairyproject.Entities.Administrator;
+import com.project.dairyproject.Entities.ConfirmPurchaseOrder;
 import com.project.dairyproject.Entities.ConsumerDetails;
 import com.project.dairyproject.Entities.ConsumerQuery;
 import com.project.dairyproject.Entities.DeletedConsumerRecords;
 import com.project.dairyproject.Entities.DeletedSellerRecords;
 import com.project.dairyproject.Entities.FeedBackDetails;
 import com.project.dairyproject.Entities.ProductDetails;
+import com.project.dairyproject.Entities.PurchaseDetails;
 import com.project.dairyproject.Entities.SellerDetails;
 import com.project.dairyproject.Entities.SellerProducts;
 import com.project.dairyproject.Entities.SellerQuery;
@@ -32,10 +35,13 @@ import com.project.dairyproject.LoginEntities.ChangePassword;
 import com.project.dairyproject.LoginEntities.Login;
 import com.project.dairyproject.LoginEntities.LoginByPhone;
 import com.project.dairyproject.LoginEntities.LoginByUsername;
+import com.project.dairyproject.Repository.PurchaseRecordRepository;
+import com.project.dairyproject.Services.AdminServices;
 import com.project.dairyproject.Services.ConsumerServices;
 import com.project.dairyproject.Services.DeletedRecordsServices;
 import com.project.dairyproject.Services.FeedBackServices;
 import com.project.dairyproject.Services.ProductServices;
+import com.project.dairyproject.Services.PurchaseServices;
 import com.project.dairyproject.Services.QueryServices;
 import com.project.dairyproject.Services.SellerServices;
 import com.project.dairyproject.UserDefinedExceptions.EmailAddressFoundException;
@@ -47,6 +53,9 @@ import net.bytebuddy.asm.Advice.Return;
 @RestController
 @CrossOrigin(origins = "http://localhost:9090")
 public class MainController {
+
+	@Autowired
+	private AdminServices adminServ;
 
 	@Autowired
 	private ConsumerServices conServ;
@@ -65,6 +74,9 @@ public class MainController {
 
 	@Autowired
 	private ProductServices proServ;
+
+	@Autowired
+	private PurchaseServices purchaseServ;
 
 	// Consumers Controller
 
@@ -114,6 +126,16 @@ public class MainController {
 	public Set<SellerDetails> getSellerDetailsByProductAndLocality(@RequestParam String emailId,
 			@RequestParam String productName) {
 		return sellServ.getSellersByProductAndLocality(emailId, productName);
+	}
+
+	@GetMapping("/consumer/getpurchaserecords")
+	public List<PurchaseDetails> getPurchaseDetailsByConsumerEmailId(@RequestParam String emailId) {
+		return purchaseServ.getPurchaseDetailsByConsumerEmailId(emailId);
+	}
+
+	@PostMapping("/consumer/placeconfirmorder")
+	public PurchaseDetails purchaseConfirmOrderInRecord(@RequestBody ConfirmPurchaseOrder confirmPurchaseOrder) {
+		return purchaseServ.insertPurchaseRecord(confirmPurchaseOrder);
 	}
 
 	// Sellers Controller
@@ -175,6 +197,18 @@ public class MainController {
 	public String removeProductByProductName(@RequestParam String emailId, @RequestParam Integer pid) {
 		return sellServ.removeProductFromList(emailId, pid);
 	}
+
+	@GetMapping("/seller/getpurchaserecords")
+	public List<PurchaseDetails> getPurchaseDetailsBySellerEmailId(@RequestParam String emailId) {
+		return purchaseServ.getPurchaseDetailsBySellerEmailId(emailId);
+	}
+
+	@GetMapping("/seller/changedeliverystatus")
+	public void changeDeliveryStatus(@RequestParam int purchaseId, @RequestParam String status) {
+		purchaseServ.changeDeliveryStatusBySeller(purchaseId, status);
+	}
+
+	@GetMapping()
 
 	/*
 	 * FeedBack and Queries
@@ -392,6 +426,35 @@ public class MainController {
 	@GetMapping("/admin/products/removeproduct")
 	public String removeProductByPID(@RequestParam Integer pid) {
 		return proServ.removeProductByPID(pid);
+	}
+
+	@GetMapping("/admin/products/getallpurchasedetails")
+	public List<PurchaseDetails> getAllPurchaseDetails() {
+		return purchaseServ.getAllPurchaseRecords();
+	}
+
+	@GetMapping("/admin/products/getpurchasedetailsbyid")
+	public PurchaseDetails getPurchaseDetailsByPurchaseId(@RequestParam int purchaseId) {
+		return purchaseServ.getPurchaseDetailsFromPurchaseId(purchaseId);
+	}
+
+	/*
+	 * Administrator User
+	 */
+
+	@GetMapping("/admin/getadmindetails")
+	public Administrator getAdminDetails() {
+		return adminServ.getAdminDetails();
+	}
+
+	@PostMapping("/admin/login")
+	public Administrator adminLogin(@RequestBody Login login) {
+		return adminServ.getLoginDetails(login.getEmailId(), login.getPassword());
+	}
+
+	@PostMapping("/admin/changepassword")
+	public String changeAdminPassword(@RequestBody ChangePassword changePassword) {
+		return adminServ.changeAdminPassword(changePassword);
 	}
 
 }
