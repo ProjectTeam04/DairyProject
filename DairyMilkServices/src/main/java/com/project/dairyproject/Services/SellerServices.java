@@ -292,8 +292,18 @@ public class SellerServices {
 	}
 
 	public String removeProductFromList(String emailId, Integer pid) {
-		// TODO Auto-generated method stub
-		return null;
+		sellDetails = sellRepo.findSellerDetailsByEmailIdOnly(emailId);
+		proDetails = proServ.getProductDetailsByPid(pid);
+
+		List<ProductDetails> productDetails = new ArrayList<>(sellDetails.getProductDetails());
+
+		if (productDetails.remove(proDetails)) {
+			sellDetails.setProductDetails(new HashSet<>(productDetails));
+			sellRepo.save(sellDetails);
+			return "Product removed from your list. Hope you will get back soon !";
+		}
+
+		throw new ProductNotFoundException("Product not found !");
 	}
 
 }

@@ -46,7 +46,6 @@ public class QueryServices {
 		if (conDetails != null) {
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a");
 			String dateTime = dtf.format(LocalDateTime.now());
-			System.out.println(dateTime);
 			consumerQuery.setConsumerDetails(conDetails);
 			consumerQuery.setDateTime(dateTime);
 			conQueryRepo.save(consumerQuery);
