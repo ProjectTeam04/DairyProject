@@ -84,7 +84,7 @@ public class SellerDetails {
 	@JoinColumn(name = "AID")
 	private AddressDetails address;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "seller_product_details", joinColumns = @JoinColumn(name = "sellerId"), inverseJoinColumns = @JoinColumn(name = "productId"))
 	@JsonIgnore
 	private Set<ProductDetails> productDetails;

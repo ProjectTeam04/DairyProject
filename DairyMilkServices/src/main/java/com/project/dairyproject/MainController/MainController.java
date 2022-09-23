@@ -110,6 +110,12 @@ public class MainController {
 		return proServ.getAllProductDetails();
 	}
 
+	@GetMapping("/consumer/getsellersbyproductlocality")
+	public Set<SellerDetails> getSellerDetailsByProductAndLocality(@RequestParam String emailId,
+			@RequestParam String productName) {
+		return sellServ.getSellersByProductAndLocality(emailId, productName);
+	}
+
 	// Sellers Controller
 
 	@PostMapping("/seller/registerdetails")

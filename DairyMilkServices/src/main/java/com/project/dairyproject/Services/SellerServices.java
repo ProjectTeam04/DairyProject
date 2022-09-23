@@ -28,6 +28,7 @@ import com.project.dairyproject.UserDefinedExceptions.EmailAddressFoundException
 import com.project.dairyproject.UserDefinedExceptions.IncorrectPasswordException;
 import com.project.dairyproject.UserDefinedExceptions.PhoneNumberFoundException;
 import com.project.dairyproject.UserDefinedExceptions.ProductNotFoundException;
+import com.project.dairyproject.UserDefinedExceptions.SellerNotFoundException;
 import com.project.dairyproject.UserDefinedExceptions.UnmatchedPasswordException;
 import com.project.dairyproject.UserDefinedExceptions.UsernameFoundException;
 
@@ -164,6 +165,41 @@ public class SellerServices {
 
 	}
 
+	public Set<SellerDetails> getSellersByProductAndLocality(String emailId, String productName) {
+
+		consumerDetails = conRepo.findConsumerDetailsByEmailIdOnly(emailId);
+
+		List<ProductDetails> productDetails = new ArrayList<>(proServ.getAllProductDetails());
+		List<SellerDetails> sellerList = new ArrayList<>();
+
+		for (int i = 0; i < productDetails.size(); i++) {
+			if (productDetails.get(i).getName().equals(productName)) {
+				sellerList = new ArrayList<>(productDetails.get(i).getSellerDetails());
+			}
+		}
+
+		Set<SellerDetails> sellerFinalList = new HashSet<>();
+
+		for (int i = 0; i < sellerList.size(); i++) {
+			if (sellerList.get(i).getAddress().getPincode() == consumerDetails.getAddress().getPincode()) {
+				sellerFinalList.add(sellerList.get(i));
+			}
+
+			if (sellerList.get(i).getAddress().getTown() == consumerDetails.getAddress().getTown()) {
+				sellerFinalList.add(sellerList.get(i));
+			}
+
+			if (sellerList.get(i).getAddress().getDistrict() == consumerDetails.getAddress().getDistrict()) {
+				sellerFinalList.add(sellerList.get(i));
+			}
+		}
+		consumerDetails = null;
+		productDetails = null;
+		sellerList = null;
+		return sellerFinalList;
+
+	}
+
 	public SellerDetails updateSellerDetails(SellerDetails sellerDetails) {
 		sellDetails = sellRepo.findSellerDetailsByEmailAndPassword(sellerDetails.getEmailId(),
 				sellerDetails.getPassword());
@@ -235,17 +271,23 @@ public class SellerServices {
 			productDetailsSet = null;
 			sellDetails = null;
 			return sellRepo.findSellerDetailsByEmailIdOnly(sellerProducts.getEmailId()).getProductDetails();
-		} else {
-
 		}
+
+		throw new SellerNotFoundException("Seller not found !");
 
 	}
 
 	public Set<ProductDetails> getSellerAllProductDetails(String emailId) {
-		return sellRepo.findSellerDetailsByEmailIdOnly(emailId).getProductDetails();
+		sellDetails = sellRepo.findSellerDetailsByEmailIdOnly(emailId);
+		if (sellDetails != null) {
+			return sellDetails.getProductDetails();
+		}
+
+		throw new SellerNotFoundException("Seller not found !");
 	}
 
 	public List<SellerDetails> getSellersByProductName(String name) {
+		proDetails = proServ.getProductDetailsByName(name);
 		return null;
 	}
 
