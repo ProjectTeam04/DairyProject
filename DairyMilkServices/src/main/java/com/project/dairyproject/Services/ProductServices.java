@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.dairyproject.Entities.ProductDetails;
 import com.project.dairyproject.Repository.ProductRepository;
+import com.project.dairyproject.UserDefinedExceptions.ProductNotFoundException;
 
 @Service
 @Transactional
@@ -44,5 +45,13 @@ public class ProductServices {
 			return "Product Updated Succesfully.";
 		}
 		return "Product update failed.";
+	}
+
+	public String removeProductByPID(Integer pid) {
+		if (proRepo.deleteProductDetailsByPID(pid) == 1) {
+			return "Product removed succesfully...";
+		}
+
+		throw new ProductNotFoundException("Product not found !");
 	}
 }

@@ -170,6 +170,12 @@ public class MainController {
 	public Set<ProductDetails> getSellerALlProductDetails(@RequestParam String emailId) {
 		return sellServ.getSellerAllProductDetails(emailId);
 	}
+
+	@GetMapping("/seller/product/removeproduct")
+	public String removeProductByProductName(@RequestParam String emailId, @RequestParam Integer pid) {
+		return sellServ.removeProductFromList(emailId, pid);
+	}
+
 	/*
 	 * FeedBack and Queries
 	 */
@@ -381,6 +387,11 @@ public class MainController {
 	@PostMapping("/admin/products/addnewproduct")
 	public String insertNewProductDetails(@RequestBody ProductDetails productDetails) {
 		return proServ.insertNewProductDetails(productDetails);
+	}
+
+	@GetMapping("/admin/products/removeproduct")
+	public String removeProductByPID(@RequestParam Integer pid) {
+		return proServ.removeProductByPID(pid);
 	}
 
 }

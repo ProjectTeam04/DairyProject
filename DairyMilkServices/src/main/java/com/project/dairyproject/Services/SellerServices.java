@@ -291,4 +291,9 @@ public class SellerServices {
 		return null;
 	}
 
+	public String removeProductFromList(String emailId, Integer pid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

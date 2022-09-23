@@ -2,6 +2,7 @@ package com.project.dairyproject.Repository;
 
 import java.util.Set;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -19,5 +20,9 @@ public interface ProductRepository extends CrudRepository<ProductDetails, Intege
 
 	@Query("select p from ProductDetails p where p.PID = ?1")
 	public ProductDetails findProductDetailByPid(Integer PID);
+
+	@Modifying
+	@Query("delete from ProductDetails where PID = ?1")
+	public int deleteProductDetailsByPID(Integer pid);
 
 }
