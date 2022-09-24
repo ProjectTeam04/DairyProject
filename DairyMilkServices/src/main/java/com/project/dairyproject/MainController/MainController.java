@@ -173,7 +173,7 @@ public class MainController {
 		return sellServ.changeSellerPassword(changePassword);
 	}
 
-	@PostMapping("/seller/removeaccount")
+	@PostMapping("/seller/removeaccount")     
 	public String deleteSellerByEmailId(@RequestBody Login login) {
 		return sellServ.deleteSellerDetailsByEmailId(login);
 	}
@@ -183,7 +183,7 @@ public class MainController {
 		return sellServ.getSellerListByLocality(emailId);
 	}
 
-	@PostMapping("/seller/products/addproducts")
+	@PostMapping("/seller/products/addproducts")   // Test case method
 	public Set<ProductDetails> addProducts(@RequestBody SellerProducts sellerProducts) {
 		return sellServ.addProducts(sellerProducts);
 	}
@@ -203,7 +203,7 @@ public class MainController {
 		return purchaseServ.getPurchaseDetailsBySellerEmailId(emailId);
 	}
 
-	@GetMapping("/seller/changedeliverystatus")
+	@GetMapping("/seller/changedeliverystatus")      // for Test case method
 	public void changeDeliveryStatus(@RequestParam int purchaseId, @RequestParam String status) {
 		purchaseServ.changeDeliveryStatusBySeller(purchaseId, status);
 	}
@@ -219,12 +219,12 @@ public class MainController {
 		return feedServ.insertNewFeedBackDetails(feedBackDetails);
 	}
 
-	@PostMapping("/consumer/query/submitquery")
+	@PostMapping("/consumer/query/submitquery")    // for Test case
 	public String insertNewConsumerQuery(@Valid @RequestBody ConsumerQuery consumerQuery) {
 		return queryServ.insertNewConsumerQuery(consumerQuery);
 	}
 
-	@PostMapping("/seller/query/submitquery")
+	@PostMapping("/seller/query/submitquery")           // for Test case
 	public String insertNewSellerQuery(@Valid @RequestBody SellerQuery sellerQuery) {
 		return queryServ.insertNewSellerQuery(sellerQuery);
 	}
