@@ -4,12 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.project.dairyproject.Entities.AddressDetails;
 import com.project.dairyproject.Entities.ConsumerDetails;
 import com.project.dairyproject.Entities.ConsumerQuery;
+import com.project.dairyproject.Entities.ProductDetails;
 import com.project.dairyproject.Entities.SellerDetails;
 import com.project.dairyproject.Entities.SellerQuery;
 import com.project.dairyproject.LoginEntities.ChangePassword;
@@ -18,6 +22,7 @@ import com.project.dairyproject.Repository.ConsumerRepository;
 import com.project.dairyproject.Repository.ProductRepository;
 import com.project.dairyproject.Repository.SellerRepository;
 import com.project.dairyproject.Services.ConsumerServices;
+import com.project.dairyproject.Services.ProductServices;
 import com.project.dairyproject.Services.QueryServices;
 import com.project.dairyproject.Services.SellerServices;
 
@@ -52,7 +57,8 @@ class DairyMilkServicesApplicationTests {
 	@Autowired
 	private SellerDetails sellDetails;
 	
-	
+	@Autowired
+	private ProductServices proServe;
 	
 
 	// Seller Test Cases
@@ -91,13 +97,13 @@ class DairyMilkServicesApplicationTests {
         SellerDetails seller = new SellerDetails();
         AddressDetails address = new AddressDetails();
         
-        seller.setEmailId("kubarabde@gmail.com");
-        seller.setPassword("Kumar1234");
-        seller.setFirstName("Kumar");
-		seller.setLastName("Barbade");
-		seller.setPhoneNumber("9856235457");
-		seller.setStreet("Hotagi Road");
-		seller.setUsername("KumarB1234");
+        seller.setEmailId("RhitK@gmail.com");
+        seller.setPassword("Rhit1234");
+        seller.setFirstName("Rohit");
+		seller.setLastName("Kumbhar");
+		seller.setPhoneNumber("9856235458");
+		seller.setStreet("Shivaji Road");
+		seller.setUsername("RohitK1234");
 		
 		address.setPincode("562288");
 		seller.setAddress(address);
@@ -105,8 +111,8 @@ class DairyMilkServicesApplicationTests {
         SellerDetails update_seller = sellServe.updateSellerDetails(seller);
         
         // then - verify the output
-        assertThat(update_seller.getUsername()).isEqualTo("KumarB1234");
-        assertThat(update_seller.getStreet()).isEqualTo("Hotagi Road");
+        assertThat(update_seller.getUsername()).isEqualTo("RohitK1234");
+        assertThat(update_seller.getStreet()).isEqualTo("Shivaji Road");
         
     }
 	
@@ -130,35 +136,7 @@ class DairyMilkServicesApplicationTests {
     }
 	
 	
-	// Product Test Cases
-		/* ****************************************************************** */
-	/*
-	@Test
-	void addProduct() {
-		
-		SellerDetails seller = sellRpeo.findById(1).get();
-		List<ProductDetails> products = new ArrayList<>();
-		
-		ProductDetails product1 = new ProductDetails();
-		
-		product1.setName("Milk");
-		product1.setPrice(60);
-		product1.setMaxQuantity(200);
-		
-		
-		ProductDetails product2 = new ProductDetails();
-				product2.setName("Paneer");
-				product2.setPrice(80);
-				product2.setMaxQuantity(50);
-		
-		products.add(product1);
-		products.add(product2);
-		
-		prodRepo.saveAll(products);
-		
-		//product.setSeller(seller.getEmailId());
-	}
-	*/
+	
 	
 	// Address Test Cases
 		/* ****************************************************************** */
@@ -239,17 +217,20 @@ class DairyMilkServicesApplicationTests {
 	
 	@Test
     public void ChangeConsumerPassword(){
-		ConsumerDetails consumer = new ConsumerDetails();
-        
+		 ConsumerDetails consumer = new ConsumerDetails();
         ChangePassword cp = new ChangePassword();
         
-        cp.setNewPassword("Yogesh12345678");
-		
-	
-         conServe.changeConsumerPassword(cp);
         
+        cp.setEmailId("jayant@gmail.com");
+        cp.setOldPassword("Jayant1234");
+        cp.setNewPassword("Jayant123456");
+        cp.setConfirmPassword("Jayant123456");
+
+        conServe.changeConsumerPassword(cp);
+          
+        consumer = conRepo.findConsumerDetailsByEmailIdOnly("jayant@gmail.com");
         // then - verify the output
-        assertThat(consumer.getPassword()).isEqualTo("Yogesh12345678");
+        assertThat(consumer.getPassword()).isEqualTo("Jayant123456");
         
     }
 	
@@ -269,7 +250,7 @@ class DairyMilkServicesApplicationTests {
 		 
 	
 		 cq.setConsumerDetails(consumer); 
-		 cq.setMessage("product not good");
+		 cq.setMessage("product is not satisfactory");
 		 
 		 queryServ.insertNewConsumerQuery(cq);
 		 
@@ -283,20 +264,52 @@ class DairyMilkServicesApplicationTests {
 		 SellerDetails setseller = new SellerDetails();
 		 
 		 setseller.setEmailId("kubarabde@gmail.com");
-		 SellerDetails seller = sellRepo.findSellerDetailsByEmailIdOnly(sq.getSellerDetails().getEmailId());
+		  setseller = sellRepo.findSellerDetailsByEmailIdOnly("Kiran@gmail.com");
 		 
 		 
-		 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a");
-			String dateTime = dtf.format(LocalDateTime.now());
+	
 		 
-		 sq.setSellerDetails(seller);
-		 sq.setDateTime(dateTime);
+		 sq.setSellerDetails(setseller);
+		 sq.setMessage("False consumer Complaints");
 		 
 		 queryServ.insertNewSellerQuery(sq);
 		 
 		 
 	 }
-	
-	
+	 
+	 /* ProductService Test cases
+	  * ********************************************************
+	  */
+	 
+	 @Test
+	 public void addNewProduct() {
+		 
+	 
+		 ProductDetails setproduct = new ProductDetails();
+		 
+		 setproduct.setName("Lassi");
+		 setproduct.setPrice(100);
+		 setproduct.setUnit("L");
+		
+		
+		 proServe.insertNewProductDetails(setproduct); 
+		 
+		  assertThat(setproduct.getName()).isEqualTo("Lassi");
+		 
+	 }
+	 
+
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+

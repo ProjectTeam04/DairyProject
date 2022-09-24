@@ -119,7 +119,7 @@ public class DeletedRecordsServices {
 			delSellRepo.save(delSellRecord);
 			sellDetails = null;
 			delSellRecord = null;
-			return "Consumer account removed !";
+			return "Seller account removed !";
 		}
 
 		return "Account not found !";

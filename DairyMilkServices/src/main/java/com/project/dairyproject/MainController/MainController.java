@@ -418,12 +418,12 @@ public class MainController {
 	 * Products
 	 */
 
-	@PostMapping("/admin/products/addnewproduct")
+	@PostMapping("/admin/products/addnewproduct")   // for Test case
 	public String insertNewProductDetails(@RequestBody ProductDetails productDetails) {
 		return proServ.insertNewProductDetails(productDetails);
 	}
 
-	@GetMapping("/admin/products/removeproduct")
+	@GetMapping("/admin/products/removeproduct")    // for test case
 	public String removeProductByPID(@RequestParam Integer pid) {
 		return proServ.removeProductByPID(pid);
 	}
