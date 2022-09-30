@@ -17,7 +17,7 @@ const NavBar = () => {
                                 <Link className="nav-link active" aria-current="page" to='/Home'><button type="button" class="btn btn-light">Home</button></Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to='/'><button type="button" class="btn btn-light">Purchase</button></Link>
+                                <Link className="nav-link" to='/purchaseProduct'><button type="button" class="btn btn-light">Purchase</button></Link>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" to='/consumerHome'><button type="button" class="btn btn-light">Consumer</button></Link>
@@ -26,7 +26,7 @@ const NavBar = () => {
                                 <Link className="nav-link" to='/sellerSelection'><button type="button" class="btn btn-light">Seller</button></Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to='/'><button type="button" class="btn btn-light">Administrator</button></Link>
+                                <Link className="nav-link" to='/adminLogin'><button type="button" class="btn btn-light">Administrator</button></Link>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" to='/consumerLogin'><button type="button" class="btn btn-light" style={{ marginLeft: 530 }}>Login</button></Link>

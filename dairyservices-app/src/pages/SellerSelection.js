@@ -26,8 +26,8 @@ const SellerSelection = () => {
                         <div className="col-sm-6">
                             <div className="card">
                                 <div className="card-body">
-                                    <h5 className="card-title">Dont have an seller's account ?</h5>
-                                    <p className="card-text">Dont Worry !Just click button below and fill required information </p>
+                                    <h5 className="card-title">Start selling products with us </h5>
+                                    <p className="card-text">Dont Worry ! Just click button below, fill information and you are ready to sell</p>
                                     <Link to='/sellerRegistration' className="btn btn-outline-primary">Goto Seller Registration</Link>
                                 </div>
                             </div>

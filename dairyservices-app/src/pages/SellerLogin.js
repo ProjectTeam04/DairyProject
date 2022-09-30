@@ -23,11 +23,11 @@ const SellerLogin = () => {
                 const result = response.data;
                 if (result.sellerId > 0) {
                     sessionStorage.setItem('Seller Email', result.emailId);
-                    
+
                     toast.success('Login Successful');
                     navigate('/sellerHome');
                 } else {
-                    toast.warning('Somthing went wrong !');
+                    toast.warning('Incorrect Email or Password !');
                 }
             }).catch((error) => {
                 // toast.error(error.message);

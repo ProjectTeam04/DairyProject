@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 
-const PurchaseDetails = () => {
+const OrderDetails = () => {
     const location = useLocation();
     const [details, setDetails] = useState([]);
     const navigate = useNavigate();
@@ -18,21 +18,20 @@ const PurchaseDetails = () => {
         <div className="container-md">
 
             <div>
-                <h1 style={{ marginTop: 20, marginBottom: 25, color: "darkblue" }}>Purchase Details</h1>
+                <h1 style={{ marginTop: 20, marginBottom: 25, color: "darkblue" }}>Order Details</h1>
             </div>
-
 
             <table className="table table-hover">
                 <thead>
-                    <tr className="table-success">
+                    <tr className="table-dark">
                         <th>Purchase ID</th>
                         <th>Product Name</th>
                         <th>Quantity</th>
                         <th>Total Amount (Rs.)</th>
-                        <th>Seller Name</th>
+                        <th>Consumer Name</th>
+                        <th>Delivery Address</th>
+                        <th>Contact</th>
                         <th>Payment Mode</th>
-                        <th>Status</th>
-                        <th>Transaction ID</th>
                         <th>Date/Time</th>
                     </tr>
                 </thead>
@@ -45,10 +44,10 @@ const PurchaseDetails = () => {
                                     <td>{details.productDetails.name}</td>
                                     <td>{details.quantity}</td>
                                     <td>{details.totalPrice}</td>
-                                    <td>{details.sellerDetails.firstName} {details.sellerDetails.lastName}</td>
+                                    <td>{details.consumerDetails.firstName} {details.consumerDetails.lastName}</td>
+                                    <td>{details.consumerDetails.street}, {details.consumerDetails.address.town}, {details.consumerDetails.address.pincode}</td>
+                                    <td>{details.consumerDetails.phoneNumber}</td>
                                     <td>{details.paymentMode}</td>
-                                    <th>{details.status}</th>
-                                    <td>{details.transactionId}</td>
                                     <td>{details.dateTime}</td>
                                 </tr>
                             </>
@@ -61,4 +60,4 @@ const PurchaseDetails = () => {
 }
 
 
-export default PurchaseDetails;
+export default OrderDetails;

@@ -3,25 +3,25 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const DeleteConsumerAccount = () => {
-    const [consumerId, setConsumerId] = useState('');
+const DeleteSellerAccount = () => {
+    const [sellerId, setSellerId] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const { consumerId } = location.state;
-        setConsumerId(consumerId);
+        const { sellerId } = location.state;
+        setSellerId(sellerId);
     }, []);
 
-    const DeleteFinal = (consumerId) => {
-        axios.get('http://localhost:9090/admin/removeconsumeraccount', {
+    const DeleteFinal = (sellerId) => {
+        axios.get('http://localhost:9090/admin/removeselleraccount', {
             params: {
-                consumerId: consumerId
+                sellerId: sellerId
             }
         }).then((response) => {
             const result = response.data;
-            sessionStorage.removeItem('Consumer Email');
-            navigate('/consumerLogin');
+            sessionStorage.removeItem('Seller Email');
+            navigate('/sellerLogin');
             toast.success(result);
         }).catch((error) => {
             toast.error('Something Went Wrong !');
@@ -29,7 +29,7 @@ const DeleteConsumerAccount = () => {
     }
 
     const CancelDelete = () => {
-        navigate('/consumerHome');
+        navigate('/sellerHome');
     }
 
 
@@ -43,7 +43,7 @@ const DeleteConsumerAccount = () => {
                     </div>
                     <div className="card-body">
                         <p className="card-text">You are going to delete your account, which deletes all your data. <br /> Are you sure ? </p>
-                        <button className="btn btn-outline-danger" style={{ width: 80 }} onClick={() => DeleteFinal(consumerId)}>Yes</button>
+                        <button className="btn btn-outline-danger" style={{ width: 80 }} onClick={() => DeleteFinal(sellerId)}>Yes</button>
                         <button className="btn btn-outline-success" style={{ marginLeft: 20, width: 80 }} onClick={CancelDelete}>No</button>
                     </div>
                 </div>
@@ -53,4 +53,4 @@ const DeleteConsumerAccount = () => {
 }
 
 
-export default DeleteConsumerAccount;
+export default DeleteSellerAccount;
