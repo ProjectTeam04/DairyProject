@@ -37,8 +37,8 @@ const ConsumerDasboard = (props) => {
     }
 
 
-    const DeleteAccount = (emailId) => {
-        navigate('/deleteConsumerAccount', { state: { emailId: emailId } });
+    const DeleteAccount = (consumerId) => {
+        navigate('/deleteConsumerAccount', { state: { consumerId: consumerId } });
     }
 
 
@@ -102,7 +102,7 @@ const ConsumerDasboard = (props) => {
                             <div className="card-body">
                                 <h5 className="card-title">Delete Account</h5>
                                 <p className="card-text">Want to discontinue with this account ? <br /> </p>
-                                <a className="btn btn-danger" onClick={() => DeleteAccount(details.emailId)}>Remove Account</a>
+                                <a className="btn btn-danger" onClick={() => DeleteAccount(details.consumerId)}>Remove Account</a>
                                 <p className="card-text">(all information get deleted)</p>
                             </div>
                         </div>
