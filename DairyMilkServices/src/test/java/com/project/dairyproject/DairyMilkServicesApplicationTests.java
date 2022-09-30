@@ -2,6 +2,7 @@ package com.project.dairyproject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -64,7 +65,7 @@ class DairyMilkServicesApplicationTests {
 	// Seller Test Cases
 	/* ****************************************************************** */
 	@Test
-	void addSeller() {
+	void addSeller() throws UnsupportedEncodingException {
 		
 		SellerDetails seller = new SellerDetails();
 		AddressDetails address = new AddressDetails();
@@ -93,7 +94,7 @@ class DairyMilkServicesApplicationTests {
 	}
 	
 	@Test
-    public void updateSeller(){
+    public void updateSeller() throws UnsupportedEncodingException{
         SellerDetails seller = new SellerDetails();
         AddressDetails address = new AddressDetails();
         
@@ -117,7 +118,7 @@ class DairyMilkServicesApplicationTests {
     }
 	
 	@Test
-    public void ChangeSellerPassword(){
+    public void ChangeSellerPassword() throws UnsupportedEncodingException{
 		 SellerDetails seller = new SellerDetails();
         ChangePassword cp = new ChangePassword();
         
@@ -162,7 +163,7 @@ class DairyMilkServicesApplicationTests {
 	// Consumer Test Cases
 		/* ****************************************************************** */
 	@Test
-	void addConsumer() {
+	void addConsumer() throws UnsupportedEncodingException {
 		
 		
 		ConsumerDetails consumer = new ConsumerDetails();
@@ -191,7 +192,7 @@ class DairyMilkServicesApplicationTests {
 	}
 	
 	@Test
-	void updateConsumer() {
+	void updateConsumer() throws UnsupportedEncodingException {
 		
 		
 		ConsumerDetails consumer = new ConsumerDetails();
@@ -216,7 +217,7 @@ class DairyMilkServicesApplicationTests {
 	}
 	
 	@Test
-    public void ChangeConsumerPassword(){
+    public void ChangeConsumerPassword() throws UnsupportedEncodingException{
 		 ConsumerDetails consumer = new ConsumerDetails();
         ChangePassword cp = new ChangePassword();
         

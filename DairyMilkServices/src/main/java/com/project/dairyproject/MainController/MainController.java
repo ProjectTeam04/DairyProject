@@ -1,5 +1,6 @@
 package com.project.dairyproject.MainController;
 
+import java.io.UnsupportedEncodingException;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +88,7 @@ public class MainController {
 	}
 
 	@PostMapping("/consumer/fetchdetailsbyemail")
-	public ConsumerDetails getConsumerDetailsByEmailIdandPassword(@RequestBody Login login) {
+	public ConsumerDetails getConsumerDetailsByEmailIdandPassword(@RequestBody Login login) throws UnsupportedEncodingException {
 		return conServ.getConsumerDetailsByEmailAndPassword(login.getEmailId(), login.getPassword());
 	}
 
@@ -108,7 +109,7 @@ public class MainController {
 	}
 
 	@PostMapping("/consumer/changepassword")
-	public String changeConsumerPassword(@RequestBody ChangePassword changePassword) {
+	public String changeConsumerPassword(@RequestBody ChangePassword changePassword) throws UnsupportedEncodingException {
 		return conServ.changeConsumerPassword(changePassword);
 	}
 
@@ -147,7 +148,7 @@ public class MainController {
 	}
 
 	@PostMapping("/seller/fetchdetailsbyemail")
-	public SellerDetails getSellerDetailsByEmailIdandPassword(@RequestBody Login login) {
+	public SellerDetails getSellerDetailsByEmailIdandPassword(@RequestBody Login login) throws UnsupportedEncodingException {
 		return sellServ.getSellerDetailsByEmailAndPassword(login.getEmailId(), login.getPassword());
 	}
 
@@ -169,7 +170,7 @@ public class MainController {
 	}
 
 	@PostMapping("/seller/changepassword")
-	public String changeSellerPassword(@RequestBody ChangePassword changePassword) {
+	public String changeSellerPassword(@RequestBody ChangePassword changePassword) throws UnsupportedEncodingException {
 		return sellServ.changeSellerPassword(changePassword);
 	}
 

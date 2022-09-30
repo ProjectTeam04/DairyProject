@@ -1,6 +1,8 @@
 package com.project.dairyproject.Services;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -96,8 +98,9 @@ public class SellerServices {
 		}
 	}
 
-	public SellerDetails getSellerDetailsByEmailAndPassword(String emailId, String password) {
-		return sellRepo.findSellerDetailsByEmailAndPassword(emailId, password);
+	public SellerDetails getSellerDetailsByEmailAndPassword(String emailId, String password) throws UnsupportedEncodingException {
+		String password1= Base64.getEncoder().encodeToString(password.getBytes("UTF-8"));
+		return sellRepo.findSellerDetailsByEmailAndPassword(emailId, password1);
 	}
 
 	public SellerDetails getSellerDetailsByUsernameAndPassword(String username, String password) {
@@ -224,7 +227,7 @@ public class SellerServices {
 
 	}
 
-	public String changeSellerPassword(ChangePassword changePassword) {
+	public String changeSellerPassword(ChangePassword changePassword) throws UnsupportedEncodingException {
 		if (changePassword.getNewPassword().equals(changePassword.getConfirmPassword())) {
 			sellDetails = sellRepo.findSellerDetailsByEmailAndPassword(changePassword.getEmailId(),
 					changePassword.getOldPassword());

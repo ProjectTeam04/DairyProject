@@ -1,5 +1,8 @@
 package com.project.dairyproject.Entities;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -71,8 +74,8 @@ public class ConsumerDetails {
 	private String username;
 
 	@NotEmpty(message = "Password is required")
-	@Length(min = 6, max = 12, message = "Password must be in between 6 to 12 characters")
-	@Pattern(regexp = "(?=^.{6,15}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\\s).*$", message = "password must contain atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ")
+	//@Length(min = 6, max = 12, message = "Password must be in between 6 to 12 characters")
+	//@Pattern(regexp = "(?=^.{6,15}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\\s).*$", message = "password must contain atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ")
 	private String password;
 
 	@OneToOne(cascade = CascadeType.PERSIST)
@@ -147,8 +150,8 @@ public class ConsumerDetails {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPassword(String password) throws UnsupportedEncodingException {
+		this.password = Base64.getEncoder().encodeToString(password.getBytes("UTF-8"));
 	}
 
 	public AddressDetails getAddress() {

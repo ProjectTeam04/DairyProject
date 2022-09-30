@@ -1,5 +1,7 @@
 package com.project.dairyproject.Services;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.List;
 
 import javax.swing.event.MenuKeyEvent;
@@ -77,8 +79,9 @@ public class ConsumerServices {
 
 	}
 
-	public ConsumerDetails getConsumerDetailsByEmailAndPassword(String emailId, String password) {
-		return conRepo.findConsumerDetailsByEmailAndPassword(emailId, password);
+	public ConsumerDetails getConsumerDetailsByEmailAndPassword(String emailId, String password) throws UnsupportedEncodingException {
+		String password1= Base64.getEncoder().encodeToString(password.getBytes("UTF-8"));
+		return conRepo.findConsumerDetailsByEmailAndPassword(emailId, password1);
 	}
 
 	public ConsumerDetails getConsumerDetailsByUsernameAndPassword(String username, String password) {
@@ -158,7 +161,7 @@ public class ConsumerServices {
 
 	}
 
-	public String changeConsumerPassword(ChangePassword changePassword) {
+	public String changeConsumerPassword(ChangePassword changePassword) throws UnsupportedEncodingException {
 		if (changePassword.getNewPassword().equals(changePassword.getConfirmPassword())) {
 			conDetails = conRepo.findConsumerDetailsByEmailAndPassword(changePassword.getEmailId(),
 					changePassword.getOldPassword());
