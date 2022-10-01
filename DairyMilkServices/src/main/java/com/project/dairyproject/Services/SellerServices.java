@@ -1,6 +1,8 @@
 package com.project.dairyproject.Services;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -96,8 +98,10 @@ public class SellerServices {
 		}
 	}
 
-	public SellerDetails getSellerDetailsByEmailAndPassword(String emailId, String password) {
-		return sellRepo.findSellerDetailsByEmailAndPassword(emailId, password);
+	public SellerDetails getSellerDetailsByEmailAndPassword(String emailId, String password)
+			throws UnsupportedEncodingException {
+		String encryptPassword = Base64.getEncoder().encodeToString(password.getBytes("UTF-8"));
+		return sellRepo.findSellerDetailsByEmailAndPassword(emailId, encryptPassword);
 	}
 
 	public SellerDetails getSellerDetailsByUsernameAndPassword(String username, String password) {
@@ -224,10 +228,11 @@ public class SellerServices {
 
 	}
 
-	public String changeSellerPassword(ChangePassword changePassword) {
+	public String changeSellerPassword(ChangePassword changePassword) throws UnsupportedEncodingException {
 		if (changePassword.getNewPassword().equals(changePassword.getConfirmPassword())) {
-			sellDetails = sellRepo.findSellerDetailsByEmailAndPassword(changePassword.getEmailId(),
-					changePassword.getOldPassword());
+			String encryptPassword = Base64.getEncoder()
+					.encodeToString(changePassword.getOldPassword().getBytes("UTF-8"));
+			sellDetails = sellRepo.findSellerDetailsByEmailAndPassword(changePassword.getEmailId(), encryptPassword);
 			if (sellDetails != null) {
 				sellDetails.setPassword(changePassword.getNewPassword());
 				sellRepo.save(sellDetails);
@@ -300,7 +305,7 @@ public class SellerServices {
 		if (productDetails.remove(proDetails)) {
 			sellDetails.setProductDetails(new HashSet<>(productDetails));
 			sellRepo.save(sellDetails);
-			return "Product removed from your list. Hope you will get back soon !";
+			return "Product removed from your list !";
 		}
 
 		throw new ProductNotFoundException("Product not found !");

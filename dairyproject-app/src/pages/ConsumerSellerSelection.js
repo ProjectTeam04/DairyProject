@@ -22,16 +22,17 @@ const ConsumerSellerSelection = () => {
         setQuantity(quantity);
         const emailId = sessionStorage.getItem('Consumer Email');
         getSellerDetails(emailId);
-    }, []);
+    });
 
     const getSellerDetails = (emailId) => {
         axios.get('http://localhost:9090/consumer/getsellersbyproductlocality', {
             params: { emailId, productName }
         }).then((response) => {
             const result = response.data;
+            console.log(result);
             setSellerDetails(result);
-        }).catch(error => {
-
+        }).catch((error) => {
+            console.log(error);
         });
     }
 

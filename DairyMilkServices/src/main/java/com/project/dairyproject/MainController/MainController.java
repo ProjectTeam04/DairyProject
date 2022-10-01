@@ -1,5 +1,6 @@
 package com.project.dairyproject.MainController;
 
+import java.io.UnsupportedEncodingException;
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ import com.project.dairyproject.UserDefinedExceptions.UsernameFoundException;
 import net.bytebuddy.asm.Advice.Return;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:9090")
+@CrossOrigin
 public class MainController {
 
 	@Autowired
@@ -87,20 +88,22 @@ public class MainController {
 	}
 
 	@PostMapping("/consumer/fetchdetailsbyemail")
-	public ConsumerDetails getConsumerDetailsByEmailIdandPassword(@RequestBody Login login) {
+	public ConsumerDetails getConsumerDetailsByEmailIdandPassword(@RequestBody Login login)
+			throws UnsupportedEncodingException {
 		return conServ.getConsumerDetailsByEmailAndPassword(login.getEmailId(), login.getPassword());
 	}
-
-	@PostMapping("/consumer/fetchdetailsbyusername")
-	public ConsumerDetails getConsumerDetailsByUsernameAndPassword(@RequestBody LoginByUsername loginByUsername) {
-		return conServ.getConsumerDetailsByUsernameAndPassword(loginByUsername.getUsername(),
-				loginByUsername.getPassword());
-	}
-
-	@PostMapping("/consumer/fetchdetailsbyphonenumber")
-	public ConsumerDetails getConsumerDetailsByPhoneNumber(@RequestBody LoginByPhone loginByPhone) {
-		return conServ.getConsumerDetailsByPhoneNumber(loginByPhone.getPhoneNumber(), loginByPhone.getPassword());
-	}
+	/*
+	 * @PostMapping("/consumer/fetchdetailsbyusername") public ConsumerDetails
+	 * getConsumerDetailsByUsernameAndPassword(@RequestBody LoginByUsername
+	 * loginByUsername) { return
+	 * conServ.getConsumerDetailsByUsernameAndPassword(loginByUsername.getUsername()
+	 * , loginByUsername.getPassword()); }
+	 * 
+	 * @PostMapping("/consumer/fetchdetailsbyphonenumber") public ConsumerDetails
+	 * getConsumerDetailsByPhoneNumber(@RequestBody LoginByPhone loginByPhone) {
+	 * return conServ.getConsumerDetailsByPhoneNumber(loginByPhone.getPhoneNumber(),
+	 * loginByPhone.getPassword()); }
+	 */
 
 	@PostMapping("/consumer/updatedetails")
 	public ConsumerDetails updateConsumerDetails(@RequestBody ConsumerDetails consumerDetails) {
@@ -108,7 +111,8 @@ public class MainController {
 	}
 
 	@PostMapping("/consumer/changepassword")
-	public String changeConsumerPassword(@RequestBody ChangePassword changePassword) {
+	public String changeConsumerPassword(@RequestBody ChangePassword changePassword)
+			throws UnsupportedEncodingException {
 		return conServ.changeConsumerPassword(changePassword);
 	}
 
@@ -147,7 +151,8 @@ public class MainController {
 	}
 
 	@PostMapping("/seller/fetchdetailsbyemail")
-	public SellerDetails getSellerDetailsByEmailIdandPassword(@RequestBody Login login) {
+	public SellerDetails getSellerDetailsByEmailIdandPassword(@RequestBody Login login)
+			throws UnsupportedEncodingException {
 		return sellServ.getSellerDetailsByEmailAndPassword(login.getEmailId(), login.getPassword());
 	}
 
@@ -169,7 +174,7 @@ public class MainController {
 	}
 
 	@PostMapping("/seller/changepassword")
-	public String changeSellerPassword(@RequestBody ChangePassword changePassword) {
+	public String changeSellerPassword(@RequestBody ChangePassword changePassword) throws UnsupportedEncodingException {
 		return sellServ.changeSellerPassword(changePassword);
 	}
 

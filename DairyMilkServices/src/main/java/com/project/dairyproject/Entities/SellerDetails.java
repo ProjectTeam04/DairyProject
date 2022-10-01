@@ -1,5 +1,7 @@
 package com.project.dairyproject.Entities;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -76,15 +78,15 @@ public class SellerDetails {
 	private String username;
 
 	@NotEmpty(message = "Password is required")
-	@Length(min = 6, max = 12, message = "Password must be in between 6 to 12 characters")
-	@Pattern(regexp = "(?=^.{6,15}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\\s).*$", message = "password must contain atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ")
+//	@Length(min = 6, max = 12, message = "Password must be in between 6 to 12 characters")
+//	@Pattern(regexp = "(?=^.{6,15}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\\s).*$", message = "password must contain atleast 1 uppercase, 1 lowercase, 1 special character and 1 digit ")
 	private String password;
 
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "AID")
 	private AddressDetails address;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "seller_product_details", joinColumns = @JoinColumn(name = "sellerId"), inverseJoinColumns = @JoinColumn(name = "productId"))
 	@JsonIgnore
 	private Set<ProductDetails> productDetails;
@@ -173,8 +175,8 @@ public class SellerDetails {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPassword(String password) throws UnsupportedEncodingException {
+		this.password = Base64.getEncoder().encodeToString(password.getBytes("UTF-8"));
 	}
 
 	public AddressDetails getAddress() {

@@ -65,7 +65,7 @@ const ConsumerDasboard = (props) => {
                     <div className="col-sm-6">
                         <div className="card">
                             <div className="card-body">
-                                <h5 className="card-title">Change Paswword</h5>
+                                <h5 className="card-title">Change Password</h5>
                                 <p className="card-text">It is always better for security to frequently change your password</p>
                                 <a className="btn btn-outline-danger">Change Password</a>
                             </div>

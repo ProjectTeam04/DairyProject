@@ -1,5 +1,7 @@
 package com.project.dairyproject.Services;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.List;
 
 import javax.swing.event.MenuKeyEvent;
@@ -17,6 +19,7 @@ import com.project.dairyproject.LoginEntities.Login;
 import com.project.dairyproject.Repository.AddressRepository;
 import com.project.dairyproject.Repository.ConsumerRepository;
 import com.project.dairyproject.Repository.DeletedConsumerRepository;
+import com.project.dairyproject.UserDefinedExceptions.ConsumerNotFoundException;
 import com.project.dairyproject.UserDefinedExceptions.EmailAddressFoundException;
 import com.project.dairyproject.UserDefinedExceptions.IncorrectPasswordException;
 import com.project.dairyproject.UserDefinedExceptions.PhoneNumberFoundException;
@@ -77,8 +80,14 @@ public class ConsumerServices {
 
 	}
 
-	public ConsumerDetails getConsumerDetailsByEmailAndPassword(String emailId, String password) {
-		return conRepo.findConsumerDetailsByEmailAndPassword(emailId, password);
+	public ConsumerDetails getConsumerDetailsByEmailAndPassword(String emailId, String password)
+			throws UnsupportedEncodingException {
+		String encryptPassword = Base64.getEncoder().encodeToString(password.getBytes("UTF-8"));
+		conDetails = conRepo.findConsumerDetailsByEmailAndPassword(emailId, encryptPassword);
+		if (conDetails != null) {
+			return conDetails;
+		}
+		throw new ConsumerNotFoundException("Consumer not found !");
 	}
 
 	public ConsumerDetails getConsumerDetailsByUsernameAndPassword(String username, String password) {
@@ -150,7 +159,7 @@ public class ConsumerServices {
 		conDetails.setFirstName(consumerDetails.getFirstName());
 		conDetails.setLastName(consumerDetails.getLastName());
 		conDetails.setPhoneNumber(consumerDetails.getPhoneNumber());
-		conDetails.setUsername(consumerDetails.getUsername());
+//		conDetails.setUsername(consumerDetails.getUsername());
 		conRepo.save(conDetails);
 		conDetails = null;
 		return conRepo.findConsumerDetailsByEmailAndPassword(consumerDetails.getEmailId(),
@@ -158,10 +167,11 @@ public class ConsumerServices {
 
 	}
 
-	public String changeConsumerPassword(ChangePassword changePassword) {
+	public String changeConsumerPassword(ChangePassword changePassword) throws UnsupportedEncodingException {
 		if (changePassword.getNewPassword().equals(changePassword.getConfirmPassword())) {
-			conDetails = conRepo.findConsumerDetailsByEmailAndPassword(changePassword.getEmailId(),
-					changePassword.getOldPassword());
+			String encryptPassword = Base64.getEncoder()
+					.encodeToString(changePassword.getOldPassword().getBytes("UTF-8"));
+			conDetails = conRepo.findConsumerDetailsByEmailAndPassword(changePassword.getEmailId(), encryptPassword);
 			if (conDetails != null) {
 				conDetails.setPassword(changePassword.getNewPassword());
 				conRepo.save(conDetails);

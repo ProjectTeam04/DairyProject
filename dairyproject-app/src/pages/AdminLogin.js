@@ -56,9 +56,9 @@ const AdminLogin = () => {
                                     <label htmlFor="floatingPassword">Password</label>
                                 </div>
 
-                                <div className="form-check mb-4">
+                                {/* <div className="form-check mb-4">
                                     <label className="form-check-label" htmlFor="rememberPasswordCheck">Dont have an account ? <Link to='/consumerRegistration'>Create account here</Link> </label>
-                                </div>
+                                </div> */}
                                 <div className="d-grid">
                                     <button className="btn btn-outline-success btn-login text-uppercase fw-bold" onClick={LoginCon}>Sign
                                         in</button>

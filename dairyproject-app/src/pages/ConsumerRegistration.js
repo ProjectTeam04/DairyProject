@@ -50,7 +50,7 @@ const ConsumerRegistration = () => {
                     Navigate('/Login', { state: { consumerDetails: result } })
                 }
             }).catch((error) => {
-                toast.warning('Please enter valid details !');
+                toast.warning(error.response.data.message);
             })
         }
     }

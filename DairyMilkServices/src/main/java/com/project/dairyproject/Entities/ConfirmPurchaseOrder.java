@@ -1,6 +1,7 @@
 package com.project.dairyproject.Entities;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 public class ConfirmPurchaseOrder {
 
@@ -9,6 +10,7 @@ public class ConfirmPurchaseOrder {
 	@Email
 	private String sellerEmailId;
 	private String productName;
+	@NotNull
 	private int quantity;
 	private String paymentMode;
 

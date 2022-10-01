@@ -27,8 +27,8 @@ public class DeletedRecordsServices {
 	@Autowired
 	private ConsumerRepository conRepo;
 
-	@Autowired
-	private DeletedConsumerRecords delConRecord;
+//	@Autowired
+//	private DeletedConsumerRecords delConRecord;
 
 	@Autowired
 	private DeletedConsumerRepository delRepo;
@@ -39,11 +39,14 @@ public class DeletedRecordsServices {
 	@Autowired
 	private SellerRepository sellRepo;
 
-	@Autowired
-	private DeletedSellerRecords delSellRecord;
+//	@Autowired
+//	private DeletedSellerRecords delSellRecord;
 
 	@Autowired
 	private DeletedSellerRepository delSellRepo;
+
+	DeletedConsumerRecords delConRecord = new DeletedConsumerRecords();
+	DeletedSellerRecords delSellRecord = new DeletedSellerRecords();
 
 	public String deleteConsumerByEmailId(Login login) {
 		conDetails = conRepo.findConsumerDetailsByEmailAndPassword(login.getEmailId(), login.getPassword());
@@ -68,6 +71,7 @@ public class DeletedRecordsServices {
 	}
 
 	public String deleteConsumerByConsumerId(Integer consumerId) {
+//		DeletedConsumerRecords delConRecord = new DeletedConsumerRecords();
 		conDetails = conRepo.findConsumerDetailsByConsumerId(consumerId);
 		if (conDetails != null && conRepo.deleteConsumerDetailsByConsumerId(conDetails.getConsumerId()) == 1) {
 			delConRecord.setAddress(conDetails.getAddress());
@@ -105,6 +109,7 @@ public class DeletedRecordsServices {
 	}
 
 	public String deleteSellerByEmailId(Login login) {
+
 		sellDetails = sellRepo.findSellerDetailsByEmailAndPassword(login.getEmailId(), login.getPassword());
 		if (sellDetails != null && sellRepo.deleteSellerDetailsByEmailId(sellDetails.getEmailId()) == 1) {
 			delSellRecord.setAddress(sellDetails.getAddress());
@@ -118,7 +123,6 @@ public class DeletedRecordsServices {
 			delSellRecord.setUsername(sellDetails.getUsername());
 			delSellRepo.save(delSellRecord);
 			sellDetails = null;
-			delSellRecord = null;
 			return "Consumer account removed !";
 		}
 
@@ -127,6 +131,7 @@ public class DeletedRecordsServices {
 	}
 
 	public String deleteSellerrBySellerId(Integer sellerId) {
+//		DeletedSellerRecords delSellRecord = new DeletedSellerRecords();
 		sellDetails = sellRepo.findSellerDetailsBySellerId(sellerId);
 		if (sellDetails != null && sellRepo.deleteSellerDetailsBySellerId(sellDetails.getSellerId()) == 1) {
 			delSellRecord.setAddress(sellDetails.getAddress());
@@ -140,8 +145,8 @@ public class DeletedRecordsServices {
 			delSellRecord.setUsername(sellDetails.getUsername());
 			delSellRepo.save(delSellRecord);
 			conDetails = null;
-			delConRecord = null;
-			return "Consumer account removed !";
+			delSellRecord = null;
+			return "Seller account removed !";
 		}
 		return "Account not found !";
 

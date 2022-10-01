@@ -38,7 +38,7 @@ const AllSellerAdmin = () => {
         }).then((response) => {
             const result = response.data;
             toast.success(result);
-            navigate('/adminHome');
+            navigate('/sellerHome');
         }).catch((error) => {
             toast.error('Error while deleting seller account !');
         });

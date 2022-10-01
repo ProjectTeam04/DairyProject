@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.project.dairyproject.Entities.Administrator;
 import com.project.dairyproject.LoginEntities.ChangePassword;
 import com.project.dairyproject.Repository.AdministratorRepository;
+import com.project.dairyproject.UserDefinedExceptions.IncorrectAdminDetect;
 import com.project.dairyproject.UserDefinedExceptions.IncorrectPasswordException;
 import com.project.dairyproject.UserDefinedExceptions.UnmatchedPasswordException;
 
@@ -41,7 +42,12 @@ public class AdminServices {
 	}
 
 	public Administrator getLoginDetails(String emailId, String password) {
-		return adminRepo.findAdminDetailsByEmailIdAndPassword(emailId, password);
+		adminDetails = adminRepo.findAdminDetailsByEmailIdAndPassword(emailId, password);
+		if (adminDetails != null) {
+			return adminDetails;
+		}
+
+		throw new IncorrectAdminDetect("Incorrect Administrator Credentials");
 	}
 
 }
