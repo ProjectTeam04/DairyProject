@@ -81,7 +81,7 @@ const SellerDashboard = (props) => {
                             <div className="card-body">
                                 <h5 className="card-title">Update Information</h5>
                                 <p className="card-text">Update all your profile information such as Name, Address, Phone Number, etc.</p>
-                                <button className="btn btn-outline-success">Update Profile</button>
+                                <Link className="btn btn-outline-success" to="/updateSellerDetails">Update Profile</Link>
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,7 @@ const SellerDashboard = (props) => {
                             <div className="card-body">
                                 <h5 className="card-title">Change Password</h5>
                                 <p className="card-text">It is always better for security to frequently change your password</p>
-                                <a href="#" className="btn btn-outline-danger">Change Password</a>
+                                <Link className="btn btn-outline-danger" to="/changeSellerPassword">Change Password</Link>
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,7 @@ const SellerDashboard = (props) => {
                             <div className="card-body">
                                 <h5 className="card-title">Raise Query</h5>
                                 <p className="card-text">Having any issue with our service ?</p>
-                                <a href="#" className="btn btn-outline-warning">Get Query Form</a>
+                                <Link href="#" className="btn btn-outline-warning" to="/sellerQuery">Get Query Form</Link>
                             </div>
                         </div>
                     </div>

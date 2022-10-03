@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.dairyproject.Entities.ConsumerDetails;
 import com.project.dairyproject.Entities.ConsumerQuery;
+import com.project.dairyproject.Entities.ConsumerQueryMessage;
 import com.project.dairyproject.Entities.SellerDetails;
 import com.project.dairyproject.Entities.SellerQuery;
 import com.project.dairyproject.Repository.ConsumerQueryRepository;
@@ -41,14 +42,16 @@ public class QueryServices {
 
 	// Consumer Query
 
-	public String insertNewConsumerQuery(ConsumerQuery consumerQuery) {
-		conDetails = conRepo.findConsumerDetailsByEmailIdOnly(consumerQuery.getConsumerDetails().getEmailId());
+	public String insertNewConsumerQuery(ConsumerQueryMessage consumerQuery) {
+		ConsumerQuery conQuery = new ConsumerQuery();
+		conDetails = conRepo.findConsumerDetailsByEmailIdOnly(consumerQuery.getEmailId());
 		if (conDetails != null) {
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a");
 			String dateTime = dtf.format(LocalDateTime.now());
-			consumerQuery.setConsumerDetails(conDetails);
-			consumerQuery.setDateTime(dateTime);
-			conQueryRepo.save(consumerQuery);
+			conQuery.setConsumerDetails(conDetails);
+			conQuery.setDateTime(dateTime);
+			conQuery.setMessage(consumerQuery.getMessage());
+			conQueryRepo.save(conQuery);
 			conDetails = null;
 			return "Thank you for your valuable time. We will soon get back to you with proper solution !";
 		}
@@ -70,14 +73,16 @@ public class QueryServices {
 
 	// Seller Query
 
-	public String insertNewSellerQuery(SellerQuery sellerQuery) {
-		sellDetails = sellRepo.findSellerDetailsByEmailIdOnly(sellerQuery.getSellerDetails().getEmailId());
+	public String insertNewSellerQuery(ConsumerQueryMessage sellerQuery) {
+		SellerQuery sellQuery = new SellerQuery();
+		sellDetails = sellRepo.findSellerDetailsByEmailIdOnly(sellerQuery.getEmailId());
 		if (sellDetails != null) {
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a");
 			String dateTime = dtf.format(LocalDateTime.now());
-			sellerQuery.setSellerDetails(sellDetails);
-			sellerQuery.setDateTime(dateTime);
-			sellQueryRepo.save(sellerQuery);
+			sellQuery.setSellerDetails(sellDetails);
+			sellQuery.setDateTime(dateTime);
+			sellQuery.setMessage(sellerQuery.getMessage());
+			sellQueryRepo.save(sellQuery);
 			sellDetails = null;
 			return "Thank you for your valuable time. We will soon get back to you with proper solution !";
 		}

@@ -142,9 +142,8 @@ public class ConsumerServices {
 		return conRepo.findConsumerDetailsByAid(aid);
 	}
 
-	public ConsumerDetails updateConsumerDetails(ConsumerDetails consumerDetails) {
-		conDetails = conRepo.findConsumerDetailsByEmailAndPassword(consumerDetails.getEmailId(),
-				consumerDetails.getPassword());
+	public ConsumerDetails updateConsumerDetails(ConsumerDetails consumerDetails) throws UnsupportedEncodingException {
+		ConsumerDetails conDetails = conRepo.findConsumerDetailsByEmailIdOnly(consumerDetails.getEmailId());
 
 		addressDetails = addRepo.findAddressDetailsByPincode(consumerDetails.getAddress().getPincode());
 		if (addressDetails != null) {
@@ -162,16 +161,16 @@ public class ConsumerServices {
 //		conDetails.setUsername(consumerDetails.getUsername());
 		conRepo.save(conDetails);
 		conDetails = null;
+
 		return conRepo.findConsumerDetailsByEmailAndPassword(consumerDetails.getEmailId(),
 				consumerDetails.getPassword());
 
 	}
 
 	public String changeConsumerPassword(ChangePassword changePassword) throws UnsupportedEncodingException {
+		String encryptPassword = Base64.getEncoder().encodeToString(changePassword.getOldPassword().getBytes("UTF-8"));
+		conDetails = conRepo.findConsumerDetailsByEmailAndPassword(changePassword.getEmailId(), encryptPassword);
 		if (changePassword.getNewPassword().equals(changePassword.getConfirmPassword())) {
-			String encryptPassword = Base64.getEncoder()
-					.encodeToString(changePassword.getOldPassword().getBytes("UTF-8"));
-			conDetails = conRepo.findConsumerDetailsByEmailAndPassword(changePassword.getEmailId(), encryptPassword);
 			if (conDetails != null) {
 				conDetails.setPassword(changePassword.getNewPassword());
 				conRepo.save(conDetails);
@@ -179,6 +178,7 @@ public class ConsumerServices {
 				return "Password changed successfully.";
 			} else {
 				throw new IncorrectPasswordException("Incorrect old password !");
+//				throw new IncorrectPasswordException(encryptPassword+"naeem");
 			}
 
 		} else {

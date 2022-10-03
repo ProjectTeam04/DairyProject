@@ -1,5 +1,8 @@
 package com.project.dairyproject.Services;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +29,7 @@ public class AdminServices {
 		return adminRepo.findAdminDetails();
 	}
 
-	public String changeAdminPassword(ChangePassword changePassword) {
+	public String changeAdminPassword(ChangePassword changePassword) throws UnsupportedEncodingException {
 		adminDetails = adminRepo.findAdminDetails();
 		if (adminDetails.getPassword().equals(changePassword.getOldPassword())) {
 			if (changePassword.getNewPassword().equals(changePassword.getConfirmPassword())) {

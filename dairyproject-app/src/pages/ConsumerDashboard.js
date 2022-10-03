@@ -16,7 +16,6 @@ const ConsumerDasboard = (props) => {
 
     const GetProductDetails = (emailId) => {
 
-
         if (emailId != null) {
 
             axios.get('http://localhost:9090/consumer/getpurchaserecords', {
@@ -31,11 +30,9 @@ const ConsumerDasboard = (props) => {
             });
 
 
-        } else {
-
         }
-    }
 
+    }
 
     const DeleteAccount = (consumerId) => {
         navigate('/deleteConsumerAccount', { state: { consumerId: consumerId } });
@@ -58,7 +55,7 @@ const ConsumerDasboard = (props) => {
                             <div className="card-body">
                                 <h5 className="card-title">Update Information</h5>
                                 <p className="card-text">Update all your profile information such as Name, Address, Phone Number, etc.</p>
-                                <a className="btn btn-outline-success">Update Profile</a>
+                                <Link className="btn btn-outline-success" to="/updateConsumerDetails">Update Profile</Link>
                             </div>
                         </div>
                     </div>
@@ -67,7 +64,7 @@ const ConsumerDasboard = (props) => {
                             <div className="card-body">
                                 <h5 className="card-title">Change Password</h5>
                                 <p className="card-text">It is always better for security to frequently change your password</p>
-                                <a className="btn btn-outline-danger">Change Password</a>
+                                <Link className="btn btn-outline-danger" to="/changeConsumerPassword">Change Password</Link>
                             </div>
                         </div>
                     </div>
@@ -89,7 +86,7 @@ const ConsumerDasboard = (props) => {
                             <div className="card-body">
                                 <h5 className="card-title">Raise Query</h5>
                                 <p className="card-text">Having any issue with our service ?</p>
-                                <a className="btn btn-outline-warning">Get Query Form</a>
+                                <Link className="btn btn-outline-warning" to="/consumerQuery">Get Query Form</Link>
                             </div>
                         </div>
                     </div>

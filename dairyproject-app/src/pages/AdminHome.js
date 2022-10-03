@@ -90,7 +90,7 @@ const AdminHome = () => {
                             <div className="card-body">
                                 <h5 className="card-title">Consumer Queries</h5>
                                 <p className="card-text">Get all Queries submited by Consumers </p>
-                                <button className="btn btn-outline-warning">Get Queries</button>
+                                <Link className="btn btn-outline-warning" to="/consumerQueryAdmin">Get Queries</Link>
                             </div>
                         </div>
                     </div>
@@ -99,16 +99,16 @@ const AdminHome = () => {
                             <div className="card-body">
                                 <h5 className="card-title">Seller Queries</h5>
                                 <p className="card-text">Get all Queries submited by Sellers</p>
-                                <a className="btn btn-outline-primary">Get Queries</a>
+                                <Link className="btn btn-outline-primary" to="/sellerQueryAdmin">Get Queries</Link>
                             </div>
                         </div>
                     </div>
                     <div className="col-sm-4">
                         <div className="card">
                             <div className="card-body">
-                                <h5 className="card-title">Feedback</h5>
-                                <p className="card-text">Get all publicaly submitted feedback <br /> </p>
-                                <a className="btn btn-outline-success">Get Feedback</a>
+                                <h5 className="card-title">Change Password</h5>
+                                <p className="card-text">Secure account by frquently changing password</p>
+                                <Link className="btn btn-outline-danger" to="/changeAdminPassword">Change Password</Link>
                             </div>
                         </div>
                     </div>

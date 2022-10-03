@@ -28,9 +28,16 @@ import SellerProductsDetailsForAdmin from './pages/SellerProductDetailsForAdmin'
 import AllPurchaseDetailsForAdmin from './pages/AllPurchaseDetailsForAdmin';
 import DeletedConsumerRecord from './pages/DeletedConsumerRecord';
 import DeletedSellerRecord from './pages/DeletedSellerRecord';
-
-
-
+import Home from './pages/Home/Home';
+import ConsumerQuery from './pages/ConsumerQuery';
+import SellerQuery from './pages/SellerQuery';
+import ConsumerQueryAdmin from './pages/ConsumerQueryAdmin';
+import SellerQueryAdmin from './pages/SellerQueryAdmin';
+import UpdateConsumerDetails from './pages/UpdateConsumerDetails';
+import UpdateSellerDetails from './pages/UpdateSellerDetails';
+import ChangeConsumerPassword from './pages/ChangeConsumerPassword';
+import ChangeSellerPassword from './pages/ChangeSellerPassword';
+import ChangeAdminPassword from './pages/ChangeAdminPassword';
 
 function App() {
   return (
@@ -39,6 +46,7 @@ function App() {
       <BrowserRouter>
         <NavBar />
         <Routes>
+          <Route path='/' element={<Home />} />
           <Route path='/consumerLogin' element={<Login />} />
           <Route path='/consumerRegistration' element={<ConsumerRegistration />} />
           <Route path='/consumerHome' element={<ConsumerHome />} />
@@ -63,6 +71,15 @@ function App() {
           <Route path='/allPurchaseDetailsForAdmin' element={<AllPurchaseDetailsForAdmin />} />
           <Route path='/deletedConsumerRecord' element={<DeletedConsumerRecord />} />
           <Route path='/deletedSellerRecord' element={<DeletedSellerRecord />} />
+          <Route path='/consumerQuery' element={<ConsumerQuery />} />
+          <Route path='/sellerQuery' element={<SellerQuery />} />
+          <Route path='/consumerQueryAdmin' element={<ConsumerQueryAdmin />} />
+          <Route path='/sellerQueryAdmin' element={<SellerQueryAdmin />} />
+          <Route path='/updateConsumerDetails' element={<UpdateConsumerDetails />} />
+          <Route path='/updateSellerDetails' element={<UpdateSellerDetails />} />
+          <Route path='/changeConsumerPassword' element={<ChangeConsumerPassword />} />
+          <Route path='/changeSellerPassword' element={<ChangeSellerPassword />} />
+          <Route path='/changeAdminPassword' element={<ChangeAdminPassword />} />
         </Routes>
 
         <ToastContainer
@@ -85,3 +102,4 @@ function App() {
 
 
 export default App;
+

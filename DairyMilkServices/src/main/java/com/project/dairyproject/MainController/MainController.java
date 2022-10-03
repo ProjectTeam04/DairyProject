@@ -24,6 +24,7 @@ import com.project.dairyproject.Entities.Administrator;
 import com.project.dairyproject.Entities.ConfirmPurchaseOrder;
 import com.project.dairyproject.Entities.ConsumerDetails;
 import com.project.dairyproject.Entities.ConsumerQuery;
+import com.project.dairyproject.Entities.ConsumerQueryMessage;
 import com.project.dairyproject.Entities.DeletedConsumerRecords;
 import com.project.dairyproject.Entities.DeletedSellerRecords;
 import com.project.dairyproject.Entities.FeedBackDetails;
@@ -106,7 +107,8 @@ public class MainController {
 	 */
 
 	@PostMapping("/consumer/updatedetails")
-	public ConsumerDetails updateConsumerDetails(@RequestBody ConsumerDetails consumerDetails) {
+	public ConsumerDetails updateConsumerDetails(@RequestBody ConsumerDetails consumerDetails)
+			throws UnsupportedEncodingException {
 		return conServ.updateConsumerDetails(consumerDetails);
 	}
 
@@ -225,12 +227,12 @@ public class MainController {
 	}
 
 	@PostMapping("/consumer/query/submitquery")
-	public String insertNewConsumerQuery(@Valid @RequestBody ConsumerQuery consumerQuery) {
+	public String insertNewConsumerQuery(@Valid @RequestBody ConsumerQueryMessage consumerQuery) {
 		return queryServ.insertNewConsumerQuery(consumerQuery);
 	}
 
 	@PostMapping("/seller/query/submitquery")
-	public String insertNewSellerQuery(@Valid @RequestBody SellerQuery sellerQuery) {
+	public String insertNewSellerQuery(@Valid @RequestBody ConsumerQueryMessage sellerQuery) {
 		return queryServ.insertNewSellerQuery(sellerQuery);
 	}
 
@@ -458,7 +460,7 @@ public class MainController {
 	}
 
 	@PostMapping("/admin/changepassword")
-	public String changeAdminPassword(@RequestBody ChangePassword changePassword) {
+	public String changeAdminPassword(@RequestBody ChangePassword changePassword) throws UnsupportedEncodingException {
 		return adminServ.changeAdminPassword(changePassword);
 	}
 

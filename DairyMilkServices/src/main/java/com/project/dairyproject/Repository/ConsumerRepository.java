@@ -29,7 +29,7 @@ public interface ConsumerRepository extends CrudRepository<ConsumerDetails, Inte
 	@Query("select count(c) from ConsumerDetails c where c.phoneNumber = ?1")
 	public int findConsumerDetailsByPhoneNumber(String phoneNumber);
 
-	@Query("select c from ConsumerDetails c where c.emailId like ?1")
+	@Query("select c from ConsumerDetails c where c.emailId = ?1")
 	public ConsumerDetails findConsumerDetailsByEmailIdOnly(String emailId);
 
 	@Query("select c from ConsumerDetails c where c.username = ?1")

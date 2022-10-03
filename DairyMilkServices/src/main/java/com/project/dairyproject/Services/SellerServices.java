@@ -205,8 +205,7 @@ public class SellerServices {
 	}
 
 	public SellerDetails updateSellerDetails(SellerDetails sellerDetails) {
-		sellDetails = sellRepo.findSellerDetailsByEmailAndPassword(sellerDetails.getEmailId(),
-				sellerDetails.getPassword());
+		sellDetails = sellRepo.findSellerDetailsByEmailIdOnly(sellerDetails.getEmailId());
 
 		addressDetails = addRepo.findAddressDetailsByPincode(sellerDetails.getAddress().getPincode());
 		if (addressDetails != null) {
